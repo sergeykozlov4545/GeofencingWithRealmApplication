@@ -31,7 +31,10 @@ public class EditPointPresenterImpl
 
     @Override
     public void onEditRegionButtonClick() {
-
+        EditPointActivityView view = getView();
+        if (view != null) {
+//            view.showDialog(EditRegionDialog.getInstance());
+        }
     }
 
     @Override
