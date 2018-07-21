@@ -38,6 +38,10 @@ public class EditPointActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_points);
 
         ButterKnife.bind(this);
+
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        toolbar.setNavigationOnClickListener((v) -> onBackPressed());
+        toolbar.setContentInsetStartWithNavigation(0);
     }
 
     @OnClick(R.id.addRegionButton)
