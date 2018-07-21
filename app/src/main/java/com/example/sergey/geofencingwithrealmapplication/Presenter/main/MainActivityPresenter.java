@@ -1,6 +1,9 @@
 package com.example.sergey.geofencingwithrealmapplication.Presenter.main;
 
-public interface MainActivityPresenter {
+import com.example.sergey.geofencingwithrealmapplication.Presenter.base.MVPPresenter;
+import com.example.sergey.geofencingwithrealmapplication.View.main.MainActivityView;
+
+public interface MainActivityPresenter extends MVPPresenter<MainActivityView> {
     void onStartButtonClicked();
 
     void onStopButtonClicked();

@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 
+import com.example.sergey.geofencingwithrealmapplication.Presenter.main.MainActivityPresenter;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.main.MainActivityPresenterImpl;
 import com.example.sergey.geofencingwithrealmapplication.R;
 import com.example.sergey.geofencingwithrealmapplication.View.main.MainActivityView;
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     @BindView(R.id.stopButton)
     Button stopTrackButton;
 
-    private MainActivityPresenterImpl presenter;
+    private MainActivityPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
