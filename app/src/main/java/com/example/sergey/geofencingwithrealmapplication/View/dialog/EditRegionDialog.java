@@ -52,7 +52,7 @@ public class EditRegionDialog extends DialogFragment implements Dialog {
                 .setTitle(R.string.edit_region_dialog_title)
                 .setView(getDialogView())
                 .setPositiveButton(R.string.edit_region_dialog_positive_button_text, (dialogInterface, i) -> {
-                    // TODO: 21.07.18 Добавление в базу
+                    // TODO: 21.07.18 Редактировать
                 })
                 .setNegativeButton(R.string.edit_region_dialog_negative_button_text, null)
                 .create();
