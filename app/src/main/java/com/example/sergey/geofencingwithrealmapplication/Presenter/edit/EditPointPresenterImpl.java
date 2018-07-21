@@ -33,12 +33,17 @@ public class EditPointPresenterImpl
     public void onEditRegionButtonClick() {
         EditPointActivityView view = getView();
         if (view != null) {
+            // TODO: 21.07.18 Незабыть раскоментить
 //            view.showDialog(EditRegionDialog.getInstance());
         }
     }
 
     @Override
     public void onRemoveRegionButtonClick() {
-
+        EditPointActivityView view = getView();
+        if (view != null) {
+            // TODO: 21.07.18 Незабыть раскоментить
+//            view.showDialog(RemoveRegionDialog.getInstance());
+        }
     }
 }
