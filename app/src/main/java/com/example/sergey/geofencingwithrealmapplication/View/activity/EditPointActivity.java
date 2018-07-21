@@ -1,6 +1,7 @@
 package com.example.sergey.geofencingwithrealmapplication.View.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.edit.EditPointPresenter;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.edit.EditPointPresenterImpl;
 import com.example.sergey.geofencingwithrealmapplication.R;
+import com.example.sergey.geofencingwithrealmapplication.View.dialog.Dialog;
 import com.example.sergey.geofencingwithrealmapplication.View.edit.EditPointActivityView;
 
 import butterknife.BindView;
@@ -69,7 +71,7 @@ public class EditPointActivity extends AppCompatActivity implements EditPointAct
 
     @OnClick(R.id.addRegionButton)
     void onAddRegionButtonClick() {
-
+        presenter.onAddRegionButtonClick();
     }
 
     @Override
@@ -90,6 +92,11 @@ public class EditPointActivity extends AppCompatActivity implements EditPointAct
     @Override
     public void showRegionsList() {
         regionsList.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showDialog(@NonNull Dialog dialog) {
+        dialog.show(this);
     }
 
     @Override

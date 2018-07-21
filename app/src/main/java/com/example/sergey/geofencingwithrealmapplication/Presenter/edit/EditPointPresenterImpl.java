@@ -1,6 +1,7 @@
 package com.example.sergey.geofencingwithrealmapplication.Presenter.edit;
 
 import com.example.sergey.geofencingwithrealmapplication.Presenter.base.BasePresenter;
+import com.example.sergey.geofencingwithrealmapplication.View.dialog.AddRegionDialog;
 import com.example.sergey.geofencingwithrealmapplication.View.edit.EditPointActivityView;
 
 public class EditPointPresenterImpl
@@ -22,7 +23,10 @@ public class EditPointPresenterImpl
 
     @Override
     public void onAddRegionButtonClick() {
-
+        EditPointActivityView view = getView();
+        if (view != null) {
+            view.showDialog(new AddRegionDialog());
+        }
     }
 
     @Override
