@@ -1,4 +1,4 @@
-package com.example.sergey.geofencingwithrealmapplication.View.main;
+package com.example.sergey.geofencingwithrealmapplication.View.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
