@@ -11,7 +11,9 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.example.sergey.geofencingwithrealmapplication.Presenter.edit.EditPointPresenter;
 import com.example.sergey.geofencingwithrealmapplication.R;
+import com.example.sergey.geofencingwithrealmapplication.View.edit.EditPointActivityView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,7 +41,19 @@ public class AddRegionDialog extends DialogFragment implements Dialog {
                 .setTitle(R.string.add_region_dialog_title)
                 .setView(getDialogView())
                 .setPositiveButton(R.string.add_region_dialog_positive_button_text, (dialogInterface, i) -> {
-                    // TODO: 21.07.18 Добавление в базу
+                    Context context = getContext();
+                    if (!(context instanceof EditPointActivityView)) {
+                        throw new RuntimeException("context doesn't implements EditPointActivityView");
+                    }
+
+                    String regionName = nameView.getText().toString();
+                    double latitude = Double.parseDouble(latitudeView.getText().toString());
+                    double longitude = Double.parseDouble(longitudeView.getText().toString());
+                    int radius = Integer.parseInt(radiusView.getText().toString());
+
+                    EditPointPresenter presenter = ((EditPointActivityView) context).getPresenter();
+                    presenter.onCreateRegion(regionName, latitude, longitude, radius);
+
                 })
                 .setNegativeButton(R.string.add_region_dialog_negative_button_text, null)
                 .create();

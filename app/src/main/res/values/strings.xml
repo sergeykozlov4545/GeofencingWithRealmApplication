@@ -8,6 +8,9 @@
     <string name="activity_edit_points_toolbar_title">Редактирование зон</string>
     <string name="activity_edit_points_regions_list_is_empty">Список зон пуст</string>
 
+    <string name="region_position_text">Положение: </string>
+    <string name="region_radius_text">Радиус: </string>
+
     <!--dialogs-->
     <string name="region_dialog_name">Название</string>
     <string name="region_dialog_latitude">Широта</string>

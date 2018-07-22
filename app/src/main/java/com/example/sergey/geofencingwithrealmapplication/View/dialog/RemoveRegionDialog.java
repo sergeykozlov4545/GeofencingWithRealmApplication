@@ -9,12 +9,14 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 
 import com.example.sergey.geofencingwithrealmapplication.Model.Region;
+import com.example.sergey.geofencingwithrealmapplication.Presenter.edit.EditPointPresenter;
 import com.example.sergey.geofencingwithrealmapplication.R;
+import com.example.sergey.geofencingwithrealmapplication.View.edit.EditPointActivityView;
 
 public class RemoveRegionDialog extends DialogFragment implements Dialog  {
 
     private static final String TAG = "remove_region_dialog";
-    private static final String REGION_EXTRA = "region_extra";
+    private static final String REGION_EXTRA = "region_extra"; // TODO: 22.07.18 Передавать id зоны
 
     @NonNull
     public static Dialog getInstance(@NonNull Region region) {
@@ -33,7 +35,17 @@ public class RemoveRegionDialog extends DialogFragment implements Dialog  {
         return new AlertDialog.Builder(getContext())
                 .setTitle(R.string.remove_region_dialog_title)
                 .setPositiveButton(R.string.remove_region_dialog_positive_button_text, (dialogInterface, i) -> {
-                    // TODO: 21.07.18 Удаление
+                    Context context = getContext();
+                    if (!(context instanceof EditPointActivityView)) {
+                        throw new RuntimeException("context doesn't implements EditPointActivityView");
+                    }
+
+                    EditPointPresenter presenter = ((EditPointActivityView) context).getPresenter();
+
+                    Bundle args = getArguments();
+                    Region region = args.getParcelable(REGION_EXTRA);
+                    presenter.onRemoveRegion(region);
+
                 })
                 .setNegativeButton(R.string.remove_region_dialog_negative_button_text, null)
                 .create();

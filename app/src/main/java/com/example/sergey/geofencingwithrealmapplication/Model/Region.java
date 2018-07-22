@@ -4,7 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-public class Region implements Parcelable {
+import io.realm.RealmObject;
+
+public class Region extends RealmObject implements Parcelable {
 
     @NonNull
     private String name;
@@ -13,6 +15,9 @@ public class Region implements Parcelable {
     private double longitude;
 
     private int radius;
+
+    public Region() {
+    }
 
     public Region(@NonNull String name, double latitude, double longitude, int radius) {
         this.name = name;
