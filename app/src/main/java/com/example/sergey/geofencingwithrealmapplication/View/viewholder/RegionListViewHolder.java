@@ -48,6 +48,17 @@ public class RegionListViewHolder extends RecyclerView.ViewHolder {
         radiusRegionView.setText(String.valueOf(region.getRadius()));
     }
 
+    @OnClick(R.id.editRegionButton)
+    public void onEditRegionButtonClick() {
+        Context context = itemView.getContext();
+        if (!(context instanceof EditPointActivityView)) {
+            throw new RuntimeException("context doesn't implements EditPointActivityView");
+        }
+
+        EditPointPresenter presenter = ((EditPointActivityView) context).getPresenter();
+        presenter.onEditRegionButtonClick(region.getId());
+    }
+
     @OnClick(R.id.removeRegionButton)
     public void onRemoveRegionButtonClick() {
         Context context = itemView.getContext();

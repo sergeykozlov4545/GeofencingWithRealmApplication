@@ -1,6 +1,7 @@
 package com.example.sergey.geofencingwithrealmapplication.Model;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.UUID;
 
@@ -41,6 +42,11 @@ public final class RegionsDatabase {
         callback.dataIsLoaded(data);
     }
 
+    @Nullable
+    public Region getRegion(@NonNull String regionId) {
+        return realm.where(Region.class).equalTo("id", regionId).findFirst();
+    }
+
     public void addRegion(@NonNull String name, double latitude, double longitude, int radius) {
         realm.executeTransaction(r -> {
             String id = UUID.randomUUID().toString();
@@ -55,6 +61,20 @@ public final class RegionsDatabase {
         }
 
         realm.executeTransaction(r -> region.deleteFromRealm());
+    }
+
+    public void updateRegion(@NonNull String regionId, @NonNull String name, double latitude, double longitude, int radius) {
+        Region region = realm.where(Region.class).equalTo("id", regionId).findFirst();
+        if (region == null) {
+            return;
+        }
+
+        realm.executeTransaction(r -> {
+            region.setName(name);
+            region.setLatitude(latitude);
+            region.setLongitude(longitude);
+            region.setRadius(radius);
+        });
     }
 
     public interface LoadRegionsCallback {

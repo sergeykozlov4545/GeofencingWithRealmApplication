@@ -18,7 +18,7 @@ import com.example.sergey.geofencingwithrealmapplication.Presenter.edit.EditPoin
 import com.example.sergey.geofencingwithrealmapplication.Presenter.edit.EditPointPresenterImpl;
 import com.example.sergey.geofencingwithrealmapplication.R;
 import com.example.sergey.geofencingwithrealmapplication.View.adapter.RegionListAdapter;
-import com.example.sergey.geofencingwithrealmapplication.View.dialog.Dialog;
+import com.example.sergey.geofencingwithrealmapplication.View.dialog.base.DialogView;
 import com.example.sergey.geofencingwithrealmapplication.View.edit.EditPointActivityView;
 
 import butterknife.BindView;
@@ -111,7 +111,7 @@ public class EditPointActivity extends AppCompatActivity implements EditPointAct
     }
 
     @Override
-    public void showDialog(@NonNull Dialog dialog) {
+    public void showDialog(@NonNull DialogView dialog) {
         dialog.show(this);
     }
 

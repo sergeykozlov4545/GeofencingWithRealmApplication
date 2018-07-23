@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import com.example.sergey.geofencingwithrealmapplication.Model.Region;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.edit.EditPointPresenter;
 import com.example.sergey.geofencingwithrealmapplication.View.base.MVPView;
-import com.example.sergey.geofencingwithrealmapplication.View.dialog.Dialog;
+import com.example.sergey.geofencingwithrealmapplication.View.dialog.base.DialogView;
 
 import io.realm.OrderedRealmCollection;
 
@@ -21,7 +21,7 @@ public interface EditPointActivityView extends MVPView {
 
     void showRegionsList();
 
-    void showDialog(@NonNull Dialog dialog);
+    void showDialog(@NonNull DialogView dialog);
 
     void closeActivity();
 

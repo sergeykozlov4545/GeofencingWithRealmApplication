@@ -10,11 +10,7 @@ public interface EditPointPresenter extends MVPPresenter<EditPointActivityView> 
 
     void onAddRegionButtonClick();
 
-    void onConfirmCreateRegion(@NonNull String name, double latitude, double longitude, int radius);
-
-    void onEditRegionButtonClick();
+    void onEditRegionButtonClick(@NonNull String regionId);
 
     void onRemoveRegionButtonClick(@NonNull String regionId);
-
-    void onConfirmRemoveRegion(@NonNull String regionId);
 }

@@ -1,4 +1,4 @@
-package com.example.sergey.geofencingwithrealmapplication.View.dialog;
+package com.example.sergey.geofencingwithrealmapplication.View.dialog.AddRegionDialog;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,14 +11,16 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.example.sergey.geofencingwithrealmapplication.Presenter.edit.EditPointPresenter;
+import com.example.sergey.geofencingwithrealmapplication.Model.RegionsDatabase;
+import com.example.sergey.geofencingwithrealmapplication.Presenter.dialog.AddRegionDialogPresenter.AddRegionDialogPresenter;
+import com.example.sergey.geofencingwithrealmapplication.Presenter.dialog.AddRegionDialogPresenter.AddRegionDialogPresenterImpl;
 import com.example.sergey.geofencingwithrealmapplication.R;
-import com.example.sergey.geofencingwithrealmapplication.View.edit.EditPointActivityView;
+import com.example.sergey.geofencingwithrealmapplication.View.dialog.base.DialogView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AddRegionDialog extends DialogFragment implements Dialog {
+public class AddRegionDialog extends DialogFragment implements DialogView {
 
     private static final String TAG = "add_region_dialog";
 
@@ -34,6 +36,14 @@ public class AddRegionDialog extends DialogFragment implements Dialog {
     @BindView(R.id.radiusView)
     TextInputEditText radiusView;
 
+    private AddRegionDialogPresenter presenter;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        presenter = new AddRegionDialogPresenterImpl(RegionsDatabase.getInstance());
+    }
+
     @NonNull
     @Override
     public android.app.Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -41,11 +51,6 @@ public class AddRegionDialog extends DialogFragment implements Dialog {
                 .setTitle(R.string.add_region_dialog_title)
                 .setView(getDialogView())
                 .setPositiveButton(R.string.add_region_dialog_positive_button_text, (dialogInterface, i) -> {
-                    Context context = getContext();
-                    if (!(context instanceof EditPointActivityView)) {
-                        throw new RuntimeException("context doesn't implements EditPointActivityView");
-                    }
-
                     // TODO: 23.07.18 Сделать проверку на пустоту. Snackbar
 
                     String regionName = nameView.getText().toString();
@@ -53,12 +58,23 @@ public class AddRegionDialog extends DialogFragment implements Dialog {
                     double longitude = Double.parseDouble(longitudeView.getText().toString());
                     int radius = Integer.parseInt(radiusView.getText().toString());
 
-                    EditPointPresenter presenter = ((EditPointActivityView) context).getPresenter();
-                    presenter.onConfirmCreateRegion(regionName, latitude, longitude, radius);
-
+                    presenter.onConfirmAddRegionButtonClick(regionName, latitude, longitude, radius);
                 })
                 .setNegativeButton(R.string.add_region_dialog_negative_button_text, null)
                 .create();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.attachView(this);
+        presenter.viewIsReady();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.detachView();
     }
 
     @Override

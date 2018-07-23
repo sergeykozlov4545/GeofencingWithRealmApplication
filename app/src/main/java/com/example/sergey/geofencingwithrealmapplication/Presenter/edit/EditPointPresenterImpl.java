@@ -5,8 +5,9 @@ import android.support.annotation.NonNull;
 import com.example.sergey.geofencingwithrealmapplication.Model.Region;
 import com.example.sergey.geofencingwithrealmapplication.Model.RegionsDatabase;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.base.BasePresenter;
-import com.example.sergey.geofencingwithrealmapplication.View.dialog.AddRegionDialog;
-import com.example.sergey.geofencingwithrealmapplication.View.dialog.RemoveRegionDialog;
+import com.example.sergey.geofencingwithrealmapplication.View.dialog.AddRegionDialog.AddRegionDialog;
+import com.example.sergey.geofencingwithrealmapplication.View.dialog.EditRegionDialog.EditRegionDialog;
+import com.example.sergey.geofencingwithrealmapplication.View.dialog.RemoveRegionDialog.RemoveRegionDialog;
 import com.example.sergey.geofencingwithrealmapplication.View.edit.EditPointActivityView;
 
 import io.realm.OrderedRealmCollection;
@@ -71,16 +72,10 @@ public class EditPointPresenterImpl
     }
 
     @Override
-    public void onConfirmCreateRegion(@NonNull String name, double latitude, double longitude, int radius) {
-        regionsDatabase.addRegion(name, latitude, longitude, radius);
-    }
-
-    @Override
-    public void onEditRegionButtonClick() {
+    public void onEditRegionButtonClick(@NonNull String regionId) {
         EditPointActivityView view = getView();
         if (view != null) {
-            // TODO: 21.07.18 Незабыть раскоментить
-//            view.showDialog(EditRegionDialog.getInstance());
+            view.showDialog(EditRegionDialog.getInstance(regionId));
         }
     }
 
@@ -90,10 +85,5 @@ public class EditPointPresenterImpl
         if (view != null) {
             view.showDialog(RemoveRegionDialog.getInstance(regionId));
         }
-    }
-
-    @Override
-    public void onConfirmRemoveRegion(@NonNull String regionId) {
-        regionsDatabase.removeRegion(regionId);
     }
 }
