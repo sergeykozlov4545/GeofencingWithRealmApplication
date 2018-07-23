@@ -8,7 +8,7 @@ public class MainActivityPresenterImpl
 
     @Override
     public void viewIsReady() {
-        // TODO: 21.07.18 Как-то узнаем, есть сейчас слежка или нет
+        // TODO: 21.07.18 Получаем список зарегистрированных зон и смотрим на их размер
         MainActivityView view = getView();
 
         if (view != null) {
@@ -19,24 +19,27 @@ public class MainActivityPresenterImpl
 
     @Override
     public void onStartButtonClicked() {
-        // TODO: 21.07.18 Чето делаем
         MainActivityView view = getView();
 
         if (view != null) {
             view.updateStartTrackButtonState(false);
             view.updateStopTrackButtonState(true);
         }
+        // TODO: 21.07.18 Регистрируем список зон
+        // TODO: 23.07.18 Добавляем их в базу
     }
 
     @Override
     public void onStopButtonClicked() {
-        // TODO: 21.07.18 Чето делаем
         MainActivityView view = getView();
 
         if (view != null) {
             view.updateStartTrackButtonState(true);
             view.updateStopTrackButtonState(false);
         }
+
+        // TODO: 21.07.18 Отменяем регистрацию зон
+        // TODO: 23.07.18 Чистим базу от них
     }
 
     @Override

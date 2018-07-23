@@ -2,12 +2,15 @@ package com.example.sergey.geofencingwithrealmapplication.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
+import com.google.android.gms.location.Geofence;
 import com.google.android.gms.maps.model.LatLng;
 
 import io.realm.RealmObject;
 
 public class Region extends RealmObject implements Parcelable {
+    private static final int TWELVE_HOURS = 12 * 60 * 60 * 1000;
 
     private String id;
     private String name;
@@ -50,6 +53,16 @@ public class Region extends RealmObject implements Parcelable {
 
     public void setRadius(int radius) {
         this.radius = radius;
+    }
+
+    @NonNull
+    public Geofence toGeofence() {
+        return new Geofence.Builder()
+                .setRequestId(name)
+                .setCircularRegion(center.getLatitude(), center.getLongitude(), radius)
+                .setExpirationDuration(TWELVE_HOURS)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
+                .build();
     }
 
     @Override
