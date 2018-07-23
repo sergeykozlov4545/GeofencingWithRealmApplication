@@ -1,5 +1,6 @@
 package com.example.sergey.geofencingwithrealmapplication.View.dialog.AddRegionDialog;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -15,6 +15,7 @@ import com.example.sergey.geofencingwithrealmapplication.Model.RegionsDatabase;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.dialog.AddRegionDialogPresenter.AddRegionDialogPresenter;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.dialog.AddRegionDialogPresenter.AddRegionDialogPresenterImpl;
 import com.example.sergey.geofencingwithrealmapplication.R;
+import com.example.sergey.geofencingwithrealmapplication.View.dialog.base.CustomAlertDialogBuilder;
 import com.example.sergey.geofencingwithrealmapplication.View.dialog.base.DialogView;
 
 import butterknife.BindView;
@@ -46,11 +47,11 @@ public class AddRegionDialog extends DialogFragment implements DialogView {
 
     @NonNull
     @Override
-    public android.app.Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        return new AlertDialog.Builder(getContext())
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        return new CustomAlertDialogBuilder(getContext())
                 .setTitle(R.string.add_region_dialog_title)
                 .setView(getDialogView())
-                .setPositiveButton(R.string.add_region_dialog_positive_button_text, (dialogInterface, i) -> {
+                .setPositiveButton(R.string.add_region_dialog_positive_button_text, v -> {
                     // TODO: 23.07.18 Сделать проверку на пустоту. Snackbar
 
                     String regionName = nameView.getText().toString();
@@ -59,8 +60,9 @@ public class AddRegionDialog extends DialogFragment implements DialogView {
                     int radius = Integer.parseInt(radiusView.getText().toString());
 
                     presenter.onConfirmAddRegionButtonClick(regionName, latitude, longitude, radius);
+                    dismiss();
                 })
-                .setNegativeButton(R.string.add_region_dialog_negative_button_text, null)
+                .setNegativeButton(R.string.add_region_dialog_negative_button_text, view -> dismiss())
                 .create();
     }
 
