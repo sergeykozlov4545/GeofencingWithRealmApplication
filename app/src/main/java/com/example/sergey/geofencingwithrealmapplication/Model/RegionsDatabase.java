@@ -47,10 +47,10 @@ public final class RegionsDatabase {
         return realm.where(Region.class).equalTo("id", regionId).findFirst();
     }
 
-    public void addRegion(@NonNull String name, double latitude, double longitude, int radius) {
+    public void addRegion(@NonNull String name, @NonNull RealmLatLng center, int radius) {
         realm.executeTransaction(r -> {
             String id = UUID.randomUUID().toString();
-            r.insertOrUpdate(new Region(id, name, latitude, longitude, radius));
+            r.insertOrUpdate(new Region(id, name, center, radius));
         });
     }
 
@@ -63,7 +63,7 @@ public final class RegionsDatabase {
         realm.executeTransaction(r -> region.deleteFromRealm());
     }
 
-    public void updateRegion(@NonNull String regionId, @NonNull String name, double latitude, double longitude, int radius) {
+    public void updateRegion(@NonNull String regionId, @NonNull String name, @NonNull RealmLatLng center, int radius) {
         Region region = realm.where(Region.class).equalTo("id", regionId).findFirst();
         if (region == null) {
             return;
@@ -71,8 +71,7 @@ public final class RegionsDatabase {
 
         realm.executeTransaction(r -> {
             region.setName(name);
-            region.setLatitude(latitude);
-            region.setLongitude(longitude);
+            region.setCenter(center);
             region.setRadius(radius);
         });
     }

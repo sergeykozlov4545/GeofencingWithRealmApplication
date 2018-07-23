@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.example.sergey.geofencingwithrealmapplication.Model.RealmLatLng;
 import com.example.sergey.geofencingwithrealmapplication.Model.Region;
 import com.example.sergey.geofencingwithrealmapplication.Model.RegionsDatabase;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.dialog.EditRegionDialogPresenter.EditRegionDialogPresenter;
@@ -82,11 +83,14 @@ public class EditRegionDialog extends DialogFragment implements EditRegionDialog
                     }
 
                     String regionName = nameView.getText().toString();
+
                     double latitude = Double.parseDouble(latitudeView.getText().toString());
                     double longitude = Double.parseDouble(longitudeView.getText().toString());
+                    RealmLatLng center = new RealmLatLng(latitude, longitude);
+
                     int radius = Integer.parseInt(radiusView.getText().toString());
 
-                    presenter.onConfirmEditRegionButtonClick(regionId, regionName, latitude, longitude, radius);
+                    presenter.onConfirmEditRegionButtonClick(regionId, regionName, center, radius);
 
                     dismiss();
                 })
@@ -121,8 +125,8 @@ public class EditRegionDialog extends DialogFragment implements EditRegionDialog
     @Override
     public void updateView(@NonNull Region region) {
         nameView.setText(region.getName());
-        latitudeView.setText(String.valueOf(region.getLatitude()));
-        longitudeView.setText(String.valueOf(region.getLongitude()));
+        latitudeView.setText(String.valueOf(region.getCenter().getLatitude()));
+        longitudeView.setText(String.valueOf(region.getCenter().getLongitude()));
         radiusView.setText(String.valueOf(region.getRadius()));
     }
 

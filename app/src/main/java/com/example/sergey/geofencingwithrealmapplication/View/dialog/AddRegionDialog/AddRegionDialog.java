@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.example.sergey.geofencingwithrealmapplication.Model.RealmLatLng;
 import com.example.sergey.geofencingwithrealmapplication.Model.RegionsDatabase;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.dialog.AddRegionDialogPresenter.AddRegionDialogPresenter;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.dialog.AddRegionDialogPresenter.AddRegionDialogPresenterImpl;
@@ -66,11 +67,14 @@ public class AddRegionDialog extends DialogFragment implements DialogView {
                     }
 
                     String regionName = nameView.getText().toString();
+
                     double latitude = Double.parseDouble(latitudeView.getText().toString());
                     double longitude = Double.parseDouble(longitudeView.getText().toString());
+                    RealmLatLng center = new RealmLatLng(latitude, longitude);
+
                     int radius = Integer.parseInt(radiusView.getText().toString());
 
-                    presenter.onConfirmAddRegionButtonClick(regionName, latitude, longitude, radius);
+                    presenter.onConfirmAddRegionButtonClick(regionName, center, radius);
                     dismiss();
                 })
                 .setNegativeButton(R.string.add_region_dialog_negative_button_text, view -> dismiss())

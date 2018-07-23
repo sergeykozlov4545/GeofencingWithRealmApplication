@@ -2,6 +2,7 @@ package com.example.sergey.geofencingwithrealmapplication.Presenter.dialog.EditR
 
 import android.support.annotation.NonNull;
 
+import com.example.sergey.geofencingwithrealmapplication.Model.RealmLatLng;
 import com.example.sergey.geofencingwithrealmapplication.Model.Region;
 import com.example.sergey.geofencingwithrealmapplication.Model.RegionsDatabase;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.base.BasePresenter;
@@ -33,7 +34,7 @@ public class EditRegionDialogPresenterImpl
     }
 
     @Override
-    public void onConfirmEditRegionButtonClick(@NonNull String regionId, @NonNull String name, double latitude, double longitude, int radius) {
-        regionsDatabase.updateRegion(regionId, name, latitude, longitude, radius);
+    public void onConfirmEditRegionButtonClick(@NonNull String regionId, @NonNull String name, @NonNull RealmLatLng center, int radius) {
+        regionsDatabase.updateRegion(regionId, name, center, radius);
     }
 }

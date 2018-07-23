@@ -3,24 +3,24 @@ package com.example.sergey.geofencingwithrealmapplication.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import io.realm.RealmObject;
 
 public class Region extends RealmObject implements Parcelable {
 
     private String id;
     private String name;
-    private double latitude;
-    private double longitude;
+    private RealmLatLng center;
     private int radius;
 
     public Region() {
     }
 
-    public Region(String id, String name, double latitude, double longitude, int radius) {
+    public Region(String id, String name, RealmLatLng center, int radius) {
         this.id = id;
         this.name = name;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.center = center;
         this.radius = radius;
     }
 
@@ -36,20 +36,12 @@ public class Region extends RealmObject implements Parcelable {
         this.name = name;
     }
 
-    public double getLatitude() {
-        return latitude;
+    public RealmLatLng getCenter() {
+        return center;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    public void setCenter(RealmLatLng center) {
+        this.center = center;
     }
 
     public int getRadius() {
@@ -66,17 +58,15 @@ public class Region extends RealmObject implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
+    public void writeToParcel(Parcel parcel, int flags) {
         parcel.writeString(name);
-        parcel.writeDouble(latitude);
-        parcel.writeDouble(longitude);
+        parcel.writeParcelable(center, flags);
         parcel.writeInt(radius);
     }
 
     private Region(Parcel in) {
         name = in.readString();
-        latitude = in.readDouble();
-        longitude = in.readDouble();
+        center = in.readParcelable(LatLng.class.getClassLoader());
         radius = in.readInt();
     }
 
@@ -91,5 +81,4 @@ public class Region extends RealmObject implements Parcelable {
             return new Region[size];
         }
     };
-
 }
