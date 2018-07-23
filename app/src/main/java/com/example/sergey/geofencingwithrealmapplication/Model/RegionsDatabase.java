@@ -3,6 +3,8 @@ package com.example.sergey.geofencingwithrealmapplication.Model;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.UUID;
 
 import io.realm.OrderedRealmCollection;
@@ -63,15 +65,21 @@ public final class RegionsDatabase {
         realm.executeTransaction(r -> region.deleteFromRealm());
     }
 
-    public void updateRegion(@NonNull String regionId, @NonNull String name, @NonNull RealmLatLng center, int radius) {
+    public void updateRegion(@NonNull String regionId,
+                             @NonNull String name,
+                             @NonNull LatLng center,
+                             int radius) {
         Region region = realm.where(Region.class).equalTo("id", regionId).findFirst();
         if (region == null) {
             return;
         }
 
         realm.executeTransaction(r -> {
+            RealmLatLng realmCenter = region.getCenter();
+            realmCenter.setLatitude(center.latitude);
+            realmCenter.setLongitude(center.longitude);
+
             region.setName(name);
-            region.setCenter(center);
             region.setRadius(radius);
         });
     }

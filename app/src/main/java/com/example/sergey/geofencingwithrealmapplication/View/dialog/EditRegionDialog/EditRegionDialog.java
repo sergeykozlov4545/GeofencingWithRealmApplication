@@ -13,7 +13,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.example.sergey.geofencingwithrealmapplication.Model.RealmLatLng;
 import com.example.sergey.geofencingwithrealmapplication.Model.Region;
 import com.example.sergey.geofencingwithrealmapplication.Model.RegionsDatabase;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.dialog.EditRegionDialogPresenter.EditRegionDialogPresenter;
@@ -21,6 +20,7 @@ import com.example.sergey.geofencingwithrealmapplication.Presenter.dialog.EditRe
 import com.example.sergey.geofencingwithrealmapplication.R;
 import com.example.sergey.geofencingwithrealmapplication.View.dialog.base.CustomAlertDialogBuilder;
 import com.example.sergey.geofencingwithrealmapplication.View.dialog.base.DialogView;
+import com.google.android.gms.maps.model.LatLng;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -86,7 +86,7 @@ public class EditRegionDialog extends DialogFragment implements EditRegionDialog
 
                     double latitude = Double.parseDouble(latitudeView.getText().toString());
                     double longitude = Double.parseDouble(longitudeView.getText().toString());
-                    RealmLatLng center = new RealmLatLng(latitude, longitude);
+                    LatLng center = new LatLng(latitude, longitude);
 
                     int radius = Integer.parseInt(radiusView.getText().toString());
 
