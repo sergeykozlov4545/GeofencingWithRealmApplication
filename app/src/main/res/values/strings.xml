@@ -8,11 +8,15 @@
     <string name="activity_edit_points_toolbar_title">Редактирование зон</string>
     <string name="activity_edit_points_regions_list_is_empty">Список зон пуст</string>
 
+    <string name="region_position_text">Положение: </string>
+    <string name="region_radius_text">Радиус: </string>
+
     <!--dialogs-->
     <string name="region_dialog_name">Название</string>
     <string name="region_dialog_latitude">Широта</string>
     <string name="region_dialog_longitude">Долгота</string>
     <string name="region_dialog_radius">Радиус (в метрах)</string>
+    <string name="region_dialog_error_message_text">Введите все поля</string>
 
     <string name="add_region_dialog_title">Добавление зоны</string>
     <string name="add_region_dialog_positive_button_text">Добавить</string>
@@ -22,7 +26,7 @@
     <string name="edit_region_dialog_positive_button_text">Изменить</string>
     <string name="edit_region_dialog_negative_button_text">Отмена</string>
 
-    <string name="remove_region_dialog_title">Удалить зону</string>
+    <string name="remove_region_dialog_title">Удалить зону?</string>
     <string name="remove_region_dialog_positive_button_text">Удалить</string>
     <string name="remove_region_dialog_negative_button_text">Отмена</string>
 
