@@ -5,9 +5,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -24,6 +26,9 @@ import butterknife.ButterKnife;
 public class AddRegionDialog extends DialogFragment implements DialogView {
 
     private static final String TAG = "add_region_dialog";
+
+    @BindView(R.id.content)
+    View contentView;
 
     @BindView(R.id.nameView)
     TextInputEditText nameView;
@@ -52,7 +57,13 @@ public class AddRegionDialog extends DialogFragment implements DialogView {
                 .setTitle(R.string.add_region_dialog_title)
                 .setView(getDialogView())
                 .setPositiveButton(R.string.add_region_dialog_positive_button_text, v -> {
-                    // TODO: 23.07.18 Сделать проверку на пустоту. Snackbar
+                    if (TextUtils.isEmpty(nameView.getText())
+                            || TextUtils.isEmpty(latitudeView.getText())
+                            || TextUtils.isEmpty(longitudeView.getText())
+                            || TextUtils.isEmpty(radiusView.getText())) {
+                        Snackbar.make(contentView, R.string.region_dialog_error_message_text, Snackbar.LENGTH_SHORT).show();
+                        return;
+                    }
 
                     String regionName = nameView.getText().toString();
                     double latitude = Double.parseDouble(latitudeView.getText().toString());
