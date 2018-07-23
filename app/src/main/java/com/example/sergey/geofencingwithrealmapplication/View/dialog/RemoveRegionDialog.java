@@ -8,20 +8,19 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 
-import com.example.sergey.geofencingwithrealmapplication.Model.Region;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.edit.EditPointPresenter;
 import com.example.sergey.geofencingwithrealmapplication.R;
 import com.example.sergey.geofencingwithrealmapplication.View.edit.EditPointActivityView;
 
-public class RemoveRegionDialog extends DialogFragment implements Dialog  {
+public class RemoveRegionDialog extends DialogFragment implements Dialog {
 
     private static final String TAG = "remove_region_dialog";
-    private static final String REGION_EXTRA = "region_extra"; // TODO: 22.07.18 Передавать id зоны
+    private static final String REGION_ID_EXTRA = "region_id_extra";
 
     @NonNull
-    public static Dialog getInstance(@NonNull Region region) {
+    public static Dialog getInstance(@NonNull String regionId) {
         Bundle args = new Bundle();
-        args.putParcelable(REGION_EXTRA, region);
+        args.putString(REGION_ID_EXTRA, regionId);
 
         RemoveRegionDialog dialog = new RemoveRegionDialog();
         dialog.setArguments(args);
@@ -41,11 +40,7 @@ public class RemoveRegionDialog extends DialogFragment implements Dialog  {
                     }
 
                     EditPointPresenter presenter = ((EditPointActivityView) context).getPresenter();
-
-                    Bundle args = getArguments();
-                    Region region = args.getParcelable(REGION_EXTRA);
-                    presenter.onRemoveRegion(region);
-
+                    presenter.onConfirmRemoveRegion(getArguments().getString(REGION_ID_EXTRA));
                 })
                 .setNegativeButton(R.string.remove_region_dialog_negative_button_text, null)
                 .create();

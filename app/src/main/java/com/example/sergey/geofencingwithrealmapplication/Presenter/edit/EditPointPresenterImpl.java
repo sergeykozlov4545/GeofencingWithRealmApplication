@@ -71,6 +71,11 @@ public class EditPointPresenterImpl
     }
 
     @Override
+    public void onConfirmCreateRegion(@NonNull String name, double latitude, double longitude, int radius) {
+        regionsDatabase.addRegion(name, latitude, longitude, radius);
+    }
+
+    @Override
     public void onEditRegionButtonClick() {
         EditPointActivityView view = getView();
         if (view != null) {
@@ -80,20 +85,15 @@ public class EditPointPresenterImpl
     }
 
     @Override
-    public void onRemoveRegionButtonClick(@NonNull Region region) {
+    public void onRemoveRegionButtonClick(@NonNull String regionId) {
         EditPointActivityView view = getView();
         if (view != null) {
-            view.showDialog(RemoveRegionDialog.getInstance(region));
+            view.showDialog(RemoveRegionDialog.getInstance(regionId));
         }
     }
 
     @Override
-    public void onCreateRegion(@NonNull String name, double latitude, double longitude, int radius) {
-        regionsDatabase.addRegion(name, latitude, longitude, radius);
-    }
-
-    @Override
-    public void onRemoveRegion(@NonNull Region region) {
-        regionsDatabase.removeRegion(region);
+    public void onConfirmRemoveRegion(@NonNull String regionId) {
+        regionsDatabase.removeRegion(regionId);
     }
 }

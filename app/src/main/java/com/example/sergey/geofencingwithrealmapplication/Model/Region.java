@@ -2,31 +2,32 @@ package com.example.sergey.geofencingwithrealmapplication.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 
 import io.realm.RealmObject;
 
 public class Region extends RealmObject implements Parcelable {
 
-    @NonNull
+    private String id;
     private String name;
-
     private double latitude;
     private double longitude;
-
     private int radius;
 
     public Region() {
     }
 
-    public Region(@NonNull String name, double latitude, double longitude, int radius) {
+    public Region(String id, String name, double latitude, double longitude, int radius) {
+        this.id = id;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.radius = radius;
     }
 
-    @NonNull
+    public String getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }

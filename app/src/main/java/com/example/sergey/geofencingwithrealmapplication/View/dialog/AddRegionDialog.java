@@ -46,13 +46,15 @@ public class AddRegionDialog extends DialogFragment implements Dialog {
                         throw new RuntimeException("context doesn't implements EditPointActivityView");
                     }
 
+                    // TODO: 23.07.18 Сделать проверку на пустоту. Snackbar
+
                     String regionName = nameView.getText().toString();
                     double latitude = Double.parseDouble(latitudeView.getText().toString());
                     double longitude = Double.parseDouble(longitudeView.getText().toString());
                     int radius = Integer.parseInt(radiusView.getText().toString());
 
                     EditPointPresenter presenter = ((EditPointActivityView) context).getPresenter();
-                    presenter.onCreateRegion(regionName, latitude, longitude, radius);
+                    presenter.onConfirmCreateRegion(regionName, latitude, longitude, radius);
 
                 })
                 .setNegativeButton(R.string.add_region_dialog_negative_button_text, null)

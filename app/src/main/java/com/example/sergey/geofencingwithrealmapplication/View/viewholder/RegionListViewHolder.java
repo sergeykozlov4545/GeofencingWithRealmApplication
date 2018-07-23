@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.sergey.geofencingwithrealmapplication.Model.Region;
+import com.example.sergey.geofencingwithrealmapplication.Presenter.edit.EditPointPresenter;
 import com.example.sergey.geofencingwithrealmapplication.R;
 import com.example.sergey.geofencingwithrealmapplication.View.edit.EditPointActivityView;
 
@@ -32,7 +33,6 @@ public class RegionListViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.removeRegionButton)
     ImageView removeRegionButton;
 
-    @NonNull
     private Region region;
 
     public RegionListViewHolder(@NonNull View itemView) {
@@ -54,6 +54,8 @@ public class RegionListViewHolder extends RecyclerView.ViewHolder {
         if (!(context instanceof EditPointActivityView)) {
             throw new RuntimeException("context doesn't implements EditPointActivityView");
         }
-        ((EditPointActivityView) context).getPresenter().onRemoveRegionButtonClick(region);
+
+        EditPointPresenter presenter = ((EditPointActivityView) context).getPresenter();
+        presenter.onRemoveRegionButtonClick(region.getId());
     }
 }
