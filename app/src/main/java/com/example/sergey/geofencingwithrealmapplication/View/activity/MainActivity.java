@@ -1,7 +1,12 @@
 package com.example.sergey.geofencingwithrealmapplication.View.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.Button;
@@ -16,6 +21,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements MainActivityView {
+
+    private static final int PERMISSION_REQUEST_CODE = 100;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -46,6 +53,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
         presenter.attachView(this);
         presenter.viewIsReady();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && !checkAccessFineLocationPermission()) {
+            requestAccessFineLocationPermission();
+        }
     }
 
     @Override
@@ -53,6 +65,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         super.onPause();
 
         presenter.detachView();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (permissions.length == 1
+                    && permissions[0].equals(Manifest.permission.ACCESS_FINE_LOCATION)
+                    && grantResults.length == 1
+                    && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                finish();
+            }
+        }
     }
 
     @Override
@@ -90,5 +116,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
             return false;
         });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private boolean checkAccessFineLocationPermission() {
+        return checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void requestAccessFineLocationPermission() {
+        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
     }
 }

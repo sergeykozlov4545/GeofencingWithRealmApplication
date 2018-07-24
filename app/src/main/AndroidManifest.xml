@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.sergey.geofencingwithrealmapplication">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:name=".App.GeofencingRealmApplication"
         android:allowBackup="true"
@@ -20,6 +22,10 @@
         </activity>
 
         <activity android:name=".View.activity.EditPointActivity" />
+
+        <service
+            android:name=".Service.GeofenceService"
+            android:exported="false" />
 
     </application>
 
