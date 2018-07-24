@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import io.realm.OrderedRealmCollection;
@@ -82,6 +84,21 @@ public final class RegionsDatabase {
             region.setName(name);
             region.setRadius(radius);
         });
+    }
+
+    public List<String> getRegisteredIds() {
+        RealmResults<RegisteredRegions> data = realm.where(RegisteredRegions.class).findAll();
+        List<String> ids = new ArrayList<>();
+
+        for (RegisteredRegions regions : data) {
+            ids.add(regions.getRegion().getName());
+        }
+
+        return ids;
+    }
+
+    public void removeAllRegisteredRegions() {
+        realm.executeTransaction(r -> r.delete(RegisteredRegions.class));
     }
 
     public interface LoadRegionsCallback {
