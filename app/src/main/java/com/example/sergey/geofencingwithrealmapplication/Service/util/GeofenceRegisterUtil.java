@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.support.annotation.NonNull;
 
+import com.example.sergey.geofencingwithrealmapplication.Model.Region;
 import com.example.sergey.geofencingwithrealmapplication.Model.RegionsDatabase;
 import com.example.sergey.geofencingwithrealmapplication.Service.GeofenceService;
 import com.google.android.gms.location.Geofence;
@@ -14,6 +15,7 @@ import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GeofenceRegisterUtil {
@@ -36,9 +38,29 @@ public class GeofenceRegisterUtil {
         regionsDatabase.removeAllRegisteredRegions();
     }
 
-    public void registerNearRegions(@NonNull Location location) {
-        // TODO: 24.07.18 Получить из базы ближайшие положению зоны
-        // TODO: 24.07.18 Зарегать их если они есть (addGeofences)
+    public void registerNearRegions(@NonNull Location location, @NonNull String regionId) {
+        Region lastRegion = RegionsDatabase.getInstance().getRegion(regionId);
+        if (lastRegion == null) {
+            return;
+        }
+
+        List<Region> nearRegions = NearRegionsUtil.getNearRegions(lastRegion, location);
+        if (nearRegions.isEmpty()) {
+            return;
+        }
+
+        addGeofences(geofenceList(nearRegions));
+
+        // TODO: 26.07.18 Добавить в базу
+    }
+
+    @NonNull
+    private List<Geofence> geofenceList(@NonNull List<Region> regions) {
+        List<Geofence> geofences = new ArrayList<>();
+        for (Region region : regions) {
+            geofences.add(region.toGeofence());
+        }
+        return geofences;
     }
 
     @SuppressLint("MissingPermission")

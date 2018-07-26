@@ -35,15 +35,9 @@ public final class RegionsDatabase {
         realm = Realm.getDefaultInstance();
     }
 
-    public void getRegions(@NonNull LoadRegionsCallback callback) {
-        RealmResults<Region> data = realm.where(Region.class).findAll();
-
-        if (data.size() == 0) {
-            callback.dataIsEmpty();
-            return;
-        }
-
-        callback.dataIsLoaded(data);
+    @NonNull
+    public OrderedRealmCollection<Region> getRegions() {
+        return realm.where(Region.class).findAll();
     }
 
     @Nullable
@@ -100,11 +94,4 @@ public final class RegionsDatabase {
     public void removeAllRegisteredRegions() {
         realm.executeTransaction(r -> r.delete(RegisteredRegions.class));
     }
-
-    public interface LoadRegionsCallback {
-        void dataIsLoaded(@NonNull OrderedRealmCollection<Region> data);
-
-        void dataIsEmpty();
-    }
-
 }

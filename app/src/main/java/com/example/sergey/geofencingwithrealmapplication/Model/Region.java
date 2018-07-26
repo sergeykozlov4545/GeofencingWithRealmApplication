@@ -58,7 +58,7 @@ public class Region extends RealmObject implements Parcelable {
     @NonNull
     public Geofence toGeofence() {
         return new Geofence.Builder()
-                .setRequestId(name)
+                .setRequestId(id)
                 .setCircularRegion(center.getLatitude(), center.getLongitude(), radius)
                 .setExpirationDuration(TWELVE_HOURS)
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)

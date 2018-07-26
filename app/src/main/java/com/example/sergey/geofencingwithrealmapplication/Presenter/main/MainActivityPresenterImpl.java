@@ -25,7 +25,8 @@ public class MainActivityPresenterImpl
             view.updateStartTrackButtonState(false);
             view.updateStopTrackButtonState(true);
         }
-        // TODO: 21.07.18 Регистрируем список зон
+
+        // TODO: 26.07.18 Регистрируем все зоны (через GeofenceService)
         // TODO: 23.07.18 Добавляем их в базу
     }
 
@@ -38,7 +39,7 @@ public class MainActivityPresenterImpl
             view.updateStopTrackButtonState(false);
         }
 
-        // TODO: 21.07.18 Отменяем регистрацию зон
+        // TODO: 26.07.18 Отменяем регистрацию зон (через GeofenceService)
         // TODO: 23.07.18 Чистим базу от них
     }
 

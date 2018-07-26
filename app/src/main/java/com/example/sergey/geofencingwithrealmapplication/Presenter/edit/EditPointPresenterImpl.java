@@ -26,32 +26,19 @@ public class EditPointPresenterImpl
     public void viewIsReady() {
         EditPointActivityView view = getView();
 
-        if (view != null) {
-            view.showProgress();
+        if (view == null) {
+            return;
         }
 
-        regionsDatabase.getRegions(new RegionsDatabase.LoadRegionsCallback() {
-            @Override
-            public void dataIsLoaded(@NonNull OrderedRealmCollection<Region> data) {
-                EditPointActivityView view = getView();
+        OrderedRealmCollection<Region> regions = regionsDatabase.getRegions();
 
-                if (view != null) {
-                    view.hideProgress();
-                    view.updateRegionsList(data);
-                    view.showRegionsList();
-                }
-            }
+        if (regions.isEmpty()) {
+            view.showEmptyListText();
+            return;
+        }
 
-            @Override
-            public void dataIsEmpty() {
-                EditPointActivityView view = getView();
-
-                if (view != null) {
-                    view.hideProgress();
-                    view.showEmptyListText();
-                }
-            }
-        });
+        view.updateRegionsList(regions);
+        view.showRegionsList();
     }
 
     @Override
