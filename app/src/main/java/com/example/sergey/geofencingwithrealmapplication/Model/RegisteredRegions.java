@@ -1,19 +1,21 @@
 package com.example.sergey.geofencingwithrealmapplication.Model;
 
+import android.support.annotation.NonNull;
+
 import io.realm.RealmObject;
 
 public class RegisteredRegions extends RealmObject {
 
-    private Region region;
+    private String regionId;
 
-    public RegisteredRegions(Region region) {
-        this.region = region;
+    public RegisteredRegions(@NonNull String regionId) {
+        this.regionId = regionId;
     }
 
     public RegisteredRegions() {
     }
 
-    public Region getRegion() {
-        return region;
+    public String getRegionId() {
+        return regionId;
     }
 }

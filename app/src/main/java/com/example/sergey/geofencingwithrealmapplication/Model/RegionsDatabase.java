@@ -85,7 +85,7 @@ public final class RegionsDatabase {
         List<String> ids = new ArrayList<>();
 
         for (RegisteredRegions regions : data) {
-            ids.add(regions.getRegion().getName());
+            ids.add(regions.getRegionId());
         }
 
         return ids;
@@ -93,5 +93,13 @@ public final class RegionsDatabase {
 
     public void removeAllRegisteredRegions() {
         realm.executeTransaction(r -> r.delete(RegisteredRegions.class));
+    }
+
+    public void addRegisteredRegion(@NonNull List<Region> regions) {
+        realm.executeTransaction(r -> {
+            for (Region region : regions) {
+                r.insertOrUpdate(new RegisteredRegions(region.getId()));
+            }
+        });
     }
 }

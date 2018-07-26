@@ -49,13 +49,12 @@ public class GeofenceRegisterUtil {
             return;
         }
 
-        addGeofences(geofenceList(nearRegions));
-
-        // TODO: 26.07.18 Добавить в базу
+        addGeofences(getGeofenceList(nearRegions));
+        RegionsDatabase.getInstance().addRegisteredRegion(nearRegions);
     }
 
     @NonNull
-    private List<Geofence> geofenceList(@NonNull List<Region> regions) {
+    private List<Geofence> getGeofenceList(@NonNull List<Region> regions) {
         List<Geofence> geofences = new ArrayList<>();
         for (Region region : regions) {
             geofences.add(region.toGeofence());
