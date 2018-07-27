@@ -7,16 +7,20 @@ import android.content.Intent;
 import android.location.Location;
 import android.support.annotation.NonNull;
 
+import com.example.sergey.geofencingwithrealmapplication.Model.LogEventDataBase;
 import com.example.sergey.geofencingwithrealmapplication.Model.Region;
 import com.example.sergey.geofencingwithrealmapplication.Model.RegionsDatabase;
 import com.example.sergey.geofencingwithrealmapplication.Service.GeofenceService;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
+import com.google.android.gms.location.GeofencingEvent;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.RealmList;
 
 public class GeofenceRegisterUtil {
 
@@ -45,8 +49,8 @@ public class GeofenceRegisterUtil {
         regionsDatabase.unregisterAllRegions();
     }
 
-    public void registerNearRegions(@NonNull Location location, @NonNull String regionId) {
-        Region lastRegion = regionsDatabase.getRegion(regionId);
+    public void registerNearRegions(@NonNull Location location, @NonNull GeofencingEvent geofencingEvent) {
+        Region lastRegion = regionsDatabase.getRegion(getFirstRegionId(geofencingEvent));
         if (lastRegion == null) {
             return;
         }
@@ -55,7 +59,26 @@ public class GeofenceRegisterUtil {
         if (!nearRegions.isEmpty()) {
             addGeofences(nearRegions);
         }
+
+        RealmList<String> registeredRegionsNames = new RealmList<>();
+        for (Region region : nearRegions) {
+            registeredRegionsNames.add(region.getName());
+        }
+
+        LogEventDataBase.getInstance()
+                .addEvent(
+                        geofencingEvent.getGeofenceTransition(),
+                        lastRegion.getName(),
+                        registeredRegionsNames
+                );
     }
+
+    @NonNull
+    private String getFirstRegionId(@NonNull GeofencingEvent geofencingEvent) {
+        List<Geofence> geofences = geofencingEvent.getTriggeringGeofences();
+        return geofences.get(0).getRequestId();
+    }
+
 
     private void removeGeofences() {
         List<String> registeredIds = new ArrayList<>();

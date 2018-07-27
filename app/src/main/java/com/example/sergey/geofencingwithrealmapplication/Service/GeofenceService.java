@@ -73,17 +73,11 @@ public class GeofenceService extends Service {
 
         geofenceRegisterUtil.unregisterAllRegions();
         geofenceRegisterUtil.registerNearRegions(
-                geofencingEvent.getTriggeringLocation(), getFirstRegionId(geofencingEvent));
+                geofencingEvent.getTriggeringLocation(), geofencingEvent);
     }
 
     private boolean isTransitionEnter(int transitionType) {
         return transitionType == Geofence.GEOFENCE_TRANSITION_ENTER;
-    }
-
-    @NonNull
-    private String getFirstRegionId(@NonNull GeofencingEvent geofencingEvent) {
-        List<Geofence> geofences = geofencingEvent.getTriggeringGeofences();
-        return geofences.get(0).getRequestId();
     }
 
     @Nullable
