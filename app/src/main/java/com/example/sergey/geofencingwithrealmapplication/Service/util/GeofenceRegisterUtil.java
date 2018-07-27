@@ -56,6 +56,7 @@ public class GeofenceRegisterUtil {
         }
 
         List<Region> nearRegions = NearRegionsUtil.getNearRegions(lastRegion, location);
+        nearRegions.add(lastRegion);
         if (!nearRegions.isEmpty()) {
             addGeofences(nearRegions);
         }
@@ -87,7 +88,9 @@ public class GeofenceRegisterUtil {
             registeredIds.add(region.getId());
         }
 
-        geofencingClient.removeGeofences(registeredIds);
+        if (!registeredIds.isEmpty()) {
+            geofencingClient.removeGeofences(registeredIds);
+        }
     }
 
     @SuppressLint("MissingPermission")

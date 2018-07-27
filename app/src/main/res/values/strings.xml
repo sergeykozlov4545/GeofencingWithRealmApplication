@@ -3,6 +3,9 @@
 
     <!--activities-->
     <string name="activity_main_toolbar_title">@string/app_name</string>
+
+    <string name="activity_main_toolbar_clear_log_text">Чистка логов</string>
+
     <string name="activity_main_track_location_on">Слежка включена</string>
     <string name="activity_main_track_location_off">Слежка отключена</string>
 

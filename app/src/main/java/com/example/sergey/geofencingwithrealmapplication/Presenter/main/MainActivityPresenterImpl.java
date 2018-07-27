@@ -1,5 +1,6 @@
 package com.example.sergey.geofencingwithrealmapplication.Presenter.main;
 
+import com.example.sergey.geofencingwithrealmapplication.Model.LogEventDataBase;
 import com.example.sergey.geofencingwithrealmapplication.Model.Region;
 import com.example.sergey.geofencingwithrealmapplication.Model.RegionsDatabase;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.base.BasePresenter;
@@ -20,6 +21,7 @@ public class MainActivityPresenterImpl
         if (view != null) {
             view.updateTrackState(!registeredRegions.isEmpty());
             view.updateTrackButton();
+            view.updateLogData(LogEventDataBase.getInstance().getEvents());
         }
     }
 
@@ -42,6 +44,12 @@ public class MainActivityPresenterImpl
                 view.sendGeofenceServiceEvent(GeofenceService.TypeOperation.UNREGISTER_ALL_REGIONS);
             }
         }
+    }
+
+    @Override
+    public void onClearLogsActionToolbarClicked() {
+        // TODO: 27.07.18 Удаление через диалог
+        LogEventDataBase.getInstance().removeAllEvents();
     }
 
     @Override

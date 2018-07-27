@@ -149,6 +149,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
                 presenter.onEditRegionsActionToolbarClicked();
             }
 
+            if (menuItem.getItemId() == R.id.clearLogs) {
+                presenter.onClearLogsActionToolbarClicked();
+            }
+
             return false;
         });
         toolbarTitleView.setText(R.string.activity_main_toolbar_title);
