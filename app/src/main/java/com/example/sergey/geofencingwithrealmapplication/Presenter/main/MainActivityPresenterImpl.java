@@ -18,30 +18,27 @@ public class MainActivityPresenterImpl
         MainActivityView view = getView();
 
         if (view != null) {
-            view.updateStartTrackButtonState(registeredRegions.isEmpty());
-            view.updateStopTrackButtonState(!registeredRegions.isEmpty());
+            view.updateTrackState(!registeredRegions.isEmpty());
+            view.updateTrackButtonText();
         }
     }
 
     @Override
-    public void onStartButtonClicked() {
+    public void onTrackButtonClicked(boolean trackZones) {
+        boolean newTrackZonesState = !trackZones;
+
         MainActivityView view = getView();
 
         if (view != null) {
-            view.updateStartTrackButtonState(false);
-            view.updateStopTrackButtonState(true);
-            view.sendGeofenceServiceEvent(GeofenceService.TypeOperation.REGISTER_ALL_REGIONS);
-        }
-    }
+            // TODO: 27.07.18 Нужно делать проверку на существование хотябы одной зоны
+            view.updateTrackState(newTrackZonesState);
+            view.updateTrackButtonText();
 
-    @Override
-    public void onStopButtonClicked() {
-        MainActivityView view = getView();
-
-        if (view != null) {
-            view.updateStartTrackButtonState(true);
-            view.updateStopTrackButtonState(false);
-            view.sendGeofenceServiceEvent(GeofenceService.TypeOperation.UNREGISTER_ALL_REGIONS);
+            if (newTrackZonesState) {
+                view.sendGeofenceServiceEvent(GeofenceService.TypeOperation.REGISTER_ALL_REGIONS);
+            } else {
+                view.sendGeofenceServiceEvent(GeofenceService.TypeOperation.UNREGISTER_ALL_REGIONS);
+            }
         }
     }
 

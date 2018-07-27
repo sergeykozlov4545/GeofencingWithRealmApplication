@@ -28,13 +28,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @BindView(R.id.startButton)
-    Button startTrackButton;
-
-    @BindView(R.id.stopButton)
-    Button stopTrackButton;
+    @BindView(R.id.trackButton)
+    Button trackButton;
 
     private MainActivityPresenter presenter;
+    private boolean trackGeozones;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,13 +81,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     }
 
     @Override
-    public void updateStartTrackButtonState(boolean state) {
-        startTrackButton.setEnabled(state);
+    public void updateTrackState(boolean trackZones) {
+        this.trackGeozones = trackZones;
     }
 
     @Override
-    public void updateStopTrackButtonState(boolean state) {
-        stopTrackButton.setEnabled(state);
+    public void updateTrackButtonText() {
+        trackButton.setText(!trackGeozones
+                ? R.string.activity_main_start_button_text
+                : R.string.activity_main_stop_button_text);
     }
 
     @Override
@@ -104,14 +104,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         startActivity(new Intent(MainActivity.this, EditPointActivity.class));
     }
 
-    @OnClick(R.id.startButton)
-    void onStartButtonClicked() {
-        presenter.onStartButtonClicked();
-    }
-
-    @OnClick(R.id.stopButton)
-    void onStopButtonClicked() {
-        presenter.onStopButtonClicked();
+    @OnClick(R.id.trackButton)
+    void onTrackButtonClicked() {
+        presenter.onTrackButtonClicked(trackGeozones);
     }
 
     private void initToolbar() {

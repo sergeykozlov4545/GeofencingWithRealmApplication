@@ -6,9 +6,9 @@ import com.example.sergey.geofencingwithrealmapplication.Service.GeofenceService
 import com.example.sergey.geofencingwithrealmapplication.View.base.MVPView;
 
 public interface MainActivityView extends MVPView {
-    void updateStartTrackButtonState(boolean state);
+    void updateTrackState(boolean trackZones);
 
-    void updateStopTrackButtonState(boolean state);
+    void updateTrackButtonText();
 
     void sendGeofenceServiceEvent(@NonNull GeofenceService.TypeOperation typeOperation);
 

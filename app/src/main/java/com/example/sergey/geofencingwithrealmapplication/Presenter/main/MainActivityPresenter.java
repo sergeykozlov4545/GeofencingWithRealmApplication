@@ -4,9 +4,7 @@ import com.example.sergey.geofencingwithrealmapplication.Presenter.base.MVPPrese
 import com.example.sergey.geofencingwithrealmapplication.View.main.MainActivityView;
 
 public interface MainActivityPresenter extends MVPPresenter<MainActivityView> {
-    void onStartButtonClicked();
-
-    void onStopButtonClicked();
+    void onTrackButtonClicked(boolean trackZones);
 
     void onEditRegionsActionToolbarClicked();
 }
