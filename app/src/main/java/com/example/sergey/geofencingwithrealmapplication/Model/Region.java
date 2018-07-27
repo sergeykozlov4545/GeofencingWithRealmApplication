@@ -16,6 +16,7 @@ public class Region extends RealmObject implements Parcelable {
     private String name;
     private RealmLatLng center;
     private int radius;
+    private boolean registered;
 
     public Region() {
     }
@@ -53,6 +54,10 @@ public class Region extends RealmObject implements Parcelable {
 
     public void setRadius(int radius) {
         this.radius = radius;
+    }
+
+    public void setRegistered(boolean registered) {
+        this.registered = registered;
     }
 
     @NonNull

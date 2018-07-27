@@ -5,13 +5,11 @@ import android.support.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import io.realm.OrderedRealmCollection;
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 public final class RegionsDatabase {
 
@@ -80,26 +78,24 @@ public final class RegionsDatabase {
         });
     }
 
-    public List<String> getRegisteredIds() {
-        RealmResults<RegisteredRegions> data = realm.where(RegisteredRegions.class).findAll();
-        List<String> ids = new ArrayList<>();
-
-        for (RegisteredRegions regions : data) {
-            ids.add(regions.getRegionId());
-        }
-
-        return ids;
-    }
-
-    public void removeAllRegisteredRegions() {
-        realm.executeTransaction(r -> r.delete(RegisteredRegions.class));
-    }
-
-    public void addRegisteredRegion(@NonNull List<Region> regions) {
+    public void registerRegions(@NonNull List<Region> regions) {
         realm.executeTransaction(r -> {
             for (Region region : regions) {
-                r.insertOrUpdate(new RegisteredRegions(region.getId()));
+                region.setRegistered(true);
             }
         });
+    }
+
+    public void unregisterAllRegions() {
+        realm.executeTransaction(r -> {
+            for (Region region : getRegisteredRegions()) {
+                region.setRegistered(false);
+            }
+        });
+    }
+
+    @NonNull
+    public List<Region> getRegisteredRegions() {
+        return realm.where(Region.class).equalTo("registered", true).findAll();
     }
 }

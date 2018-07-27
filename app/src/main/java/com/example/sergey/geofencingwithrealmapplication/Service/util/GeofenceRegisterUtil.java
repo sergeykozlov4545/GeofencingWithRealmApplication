@@ -35,26 +35,41 @@ public class GeofenceRegisterUtil {
 
     public void unregisterAllRegions() {
         removeGeofences();
-        regionsDatabase.removeAllRegisteredRegions();
+        regionsDatabase.unregisterAllRegions();
     }
 
     public void registerNearRegions(@NonNull Location location, @NonNull String regionId) {
-        Region lastRegion = RegionsDatabase.getInstance().getRegion(regionId);
+        Region lastRegion = regionsDatabase.getRegion(regionId);
         if (lastRegion == null) {
             return;
         }
 
         List<Region> nearRegions = NearRegionsUtil.getNearRegions(lastRegion, location);
-        if (nearRegions.isEmpty()) {
-            return;
+        if (!nearRegions.isEmpty()) {
+            addGeofences(nearRegions);
+        }
+    }
+
+    private void removeGeofences() {
+        List<String> registeredIds = new ArrayList<>();
+
+        for (Region region : regionsDatabase.getRegisteredRegions()) {
+            registeredIds.add(region.getId());
         }
 
-        addGeofences(getGeofenceList(nearRegions));
-        RegionsDatabase.getInstance().addRegisteredRegion(nearRegions);
+        geofencingClient.removeGeofences(registeredIds);
+    }
+
+    @SuppressLint("MissingPermission")
+    private void addGeofences(@NonNull List<Region> regions) {
+        List<Geofence> geofences = mapToGeofence(regions);
+
+        geofencingClient.addGeofences(getGeofencingRequest(geofences), pendingIntent)
+                .addOnSuccessListener(aVoid -> regionsDatabase.registerRegions(regions));
     }
 
     @NonNull
-    private List<Geofence> getGeofenceList(@NonNull List<Region> regions) {
+    private List<Geofence> mapToGeofence(@NonNull List<Region> regions) {
         List<Geofence> geofences = new ArrayList<>();
         for (Region region : regions) {
             geofences.add(region.toGeofence());
@@ -62,19 +77,10 @@ public class GeofenceRegisterUtil {
         return geofences;
     }
 
-    @SuppressLint("MissingPermission")
-    private void addGeofences(@NonNull List<Geofence> geofences) {
-        geofencingClient.addGeofences(getGeofencingRequest(geofences), pendingIntent);
-    }
-
     @NonNull
     private GeofencingRequest getGeofencingRequest(@NonNull List<Geofence> geofences) {
         return new GeofencingRequest.Builder()
                 .addGeofences(geofences)
                 .build();
-    }
-
-    private void removeGeofences() {
-        geofencingClient.removeGeofences(regionsDatabase.getRegisteredIds());
     }
 }
