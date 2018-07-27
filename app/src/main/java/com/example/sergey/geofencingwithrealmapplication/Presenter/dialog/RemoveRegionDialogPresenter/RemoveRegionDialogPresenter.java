@@ -7,4 +7,6 @@ import com.example.sergey.geofencingwithrealmapplication.View.dialog.base.Dialog
 
 public interface RemoveRegionDialogPresenter extends MVPPresenter<DialogView> {
     void onConfirmRemoveRegionButtonClick(@NonNull String regionId);
+
+    void onNegativeButtonClick();
 }

@@ -1,19 +1,25 @@
 package com.example.sergey.geofencingwithrealmapplication.Presenter.main;
 
+import com.example.sergey.geofencingwithrealmapplication.Model.Region;
+import com.example.sergey.geofencingwithrealmapplication.Model.RegionsDatabase;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.base.BasePresenter;
+import com.example.sergey.geofencingwithrealmapplication.Service.GeofenceService;
 import com.example.sergey.geofencingwithrealmapplication.View.main.MainActivityView;
+
+import java.util.List;
 
 public class MainActivityPresenterImpl
         extends BasePresenter<MainActivityView> implements MainActivityPresenter {
 
     @Override
     public void viewIsReady() {
-        // TODO: 21.07.18 Получаем список зарегистрированных зон и смотрим на их размер
+        List<Region> registeredRegions = RegionsDatabase.getInstance().getRegisteredRegions();
+
         MainActivityView view = getView();
 
         if (view != null) {
-            view.updateStartTrackButtonState(true);
-            view.updateStopTrackButtonState(false);
+            view.updateStartTrackButtonState(registeredRegions.isEmpty());
+            view.updateStopTrackButtonState(!registeredRegions.isEmpty());
         }
     }
 
@@ -24,10 +30,8 @@ public class MainActivityPresenterImpl
         if (view != null) {
             view.updateStartTrackButtonState(false);
             view.updateStopTrackButtonState(true);
+            view.sendGeofenceServiceEvent(GeofenceService.TypeOperation.REGISTER_ALL_REGIONS);
         }
-
-        // TODO: 26.07.18 Регистрируем все зоны (через GeofenceService)
-        // TODO: 23.07.18 Добавляем их в базу
     }
 
     @Override
@@ -37,10 +41,8 @@ public class MainActivityPresenterImpl
         if (view != null) {
             view.updateStartTrackButtonState(true);
             view.updateStopTrackButtonState(false);
+            view.sendGeofenceServiceEvent(GeofenceService.TypeOperation.UNREGISTER_ALL_REGIONS);
         }
-
-        // TODO: 26.07.18 Отменяем регистрацию зон (через GeofenceService)
-        // TODO: 23.07.18 Чистим базу от них
     }
 
     @Override

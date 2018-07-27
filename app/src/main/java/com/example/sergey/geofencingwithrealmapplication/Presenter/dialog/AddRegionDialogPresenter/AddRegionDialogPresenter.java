@@ -8,4 +8,6 @@ import com.example.sergey.geofencingwithrealmapplication.View.dialog.base.Dialog
 
 public interface AddRegionDialogPresenter extends MVPPresenter<DialogView> {
     void onConfirmAddRegionButtonClick(@NonNull String name, @NonNull RealmLatLng center, int radius);
+
+    void onNegativeButtonClick();
 }

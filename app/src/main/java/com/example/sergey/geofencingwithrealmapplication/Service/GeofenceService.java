@@ -1,6 +1,6 @@
 package com.example.sergey.geofencingwithrealmapplication.Service;
 
-import android.app.IntentService;
+import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
@@ -12,15 +12,11 @@ import com.google.android.gms.location.GeofencingEvent;
 
 import java.util.List;
 
-public class GeofenceService extends IntentService {
+public class GeofenceService extends Service {
 
-    private static final String TAG = "GeofenceService";
+    public static final String TYPE_OPERATION_EXTRA = "type_operation";
 
     private GeofenceRegisterUtil geofenceRegisterUtil;
-
-    public GeofenceService() {
-        super(TAG);
-    }
 
     @Override
     public void onCreate() {
@@ -30,10 +26,43 @@ public class GeofenceService extends IntentService {
     }
 
     @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        work(intent);
+        stopSelf(startId);
+        return START_STICKY;
+    }
+
+    private void work(@Nullable Intent intent) {
+        if (intent == null) {
+            return;
+        }
+
+        if (intent.hasExtra(TYPE_OPERATION_EXTRA)) {
+            TypeOperation typeOperation
+                    = (TypeOperation) intent.getSerializableExtra(TYPE_OPERATION_EXTRA);
+
+            if (typeOperation == TypeOperation.REGISTER_ALL_REGIONS) {
+                geofenceRegisterUtil.registerAllRegions();
+                return;
+            }
+
+            if (typeOperation == TypeOperation.UNREGISTER_ALL_REGIONS) {
+                geofenceRegisterUtil.unregisterAllRegions();
+                return;
+            }
+
+            if (typeOperation == TypeOperation.REREGISTER_REGIONS) {
+                geofenceRegisterUtil.unregisterAllRegions();
+                geofenceRegisterUtil.registerAllRegions();
+                return;
+            }
+
+            return;
+        }
+
         GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
 
-        if (geofencingEvent == null || geofencingEvent.hasError()) {
+        if (geofencingEvent.hasError()) {
             return;
         }
 
@@ -44,7 +73,7 @@ public class GeofenceService extends IntentService {
 
         geofenceRegisterUtil.unregisterAllRegions();
         geofenceRegisterUtil.registerNearRegions(
-                geofencingEvent.getTriggeringLocation(), getLastRegionId(geofencingEvent));
+                geofencingEvent.getTriggeringLocation(), getFirstRegionId(geofencingEvent));
     }
 
     private boolean isTransitionEnter(int transitionType) {
@@ -52,7 +81,7 @@ public class GeofenceService extends IntentService {
     }
 
     @NonNull
-    private String getLastRegionId(@NonNull GeofencingEvent geofencingEvent) {
+    private String getFirstRegionId(@NonNull GeofencingEvent geofencingEvent) {
         List<Geofence> geofences = geofencingEvent.getTriggeringGeofences();
         return geofences.get(0).getRequestId();
     }
@@ -61,5 +90,11 @@ public class GeofenceService extends IntentService {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    public enum TypeOperation {
+        REGISTER_ALL_REGIONS,
+        UNREGISTER_ALL_REGIONS,
+        REREGISTER_REGIONS
     }
 }

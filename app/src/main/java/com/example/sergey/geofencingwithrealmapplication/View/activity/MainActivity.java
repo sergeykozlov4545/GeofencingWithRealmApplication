@@ -14,6 +14,7 @@ import android.widget.Button;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.main.MainActivityPresenter;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.main.MainActivityPresenterImpl;
 import com.example.sergey.geofencingwithrealmapplication.R;
+import com.example.sergey.geofencingwithrealmapplication.Service.GeofenceService;
 import com.example.sergey.geofencingwithrealmapplication.View.main.MainActivityView;
 
 import butterknife.BindView;
@@ -89,6 +90,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     @Override
     public void updateStopTrackButtonState(boolean state) {
         stopTrackButton.setEnabled(state);
+    }
+
+    @Override
+    public void sendGeofenceServiceEvent(@NonNull GeofenceService.TypeOperation typeOperation) {
+        Intent intent = new Intent(this, GeofenceService.class)
+                .putExtra(GeofenceService.TYPE_OPERATION_EXTRA, typeOperation);
+        startService(intent);
     }
 
     @Override

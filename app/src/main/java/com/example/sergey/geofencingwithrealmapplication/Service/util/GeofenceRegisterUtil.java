@@ -33,6 +33,13 @@ public class GeofenceRegisterUtil {
         geofencingClient = LocationServices.getGeofencingClient(context.getApplicationContext());
     }
 
+    public void registerAllRegions() {
+        List<Region> regions = regionsDatabase.getRegions();
+        if (!regions.isEmpty()) {
+            addGeofences(regions);
+        }
+    }
+
     public void unregisterAllRegions() {
         removeGeofences();
         regionsDatabase.unregisterAllRegions();

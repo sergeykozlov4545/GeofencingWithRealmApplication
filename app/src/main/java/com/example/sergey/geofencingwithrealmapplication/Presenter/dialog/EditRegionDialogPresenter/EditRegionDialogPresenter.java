@@ -13,4 +13,6 @@ public interface EditRegionDialogPresenter extends MVPPresenter<EditRegionDialog
                                         @NonNull String name,
                                         @NonNull LatLng center,
                                         int radius);
+
+    void onNegativeButtonClick();
 }

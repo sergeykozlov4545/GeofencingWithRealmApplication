@@ -2,6 +2,7 @@ package com.example.sergey.geofencingwithrealmapplication.View.dialog.RemoveRegi
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import com.example.sergey.geofencingwithrealmapplication.Model.RegionsDatabase;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.dialog.RemoveRegionDialogPresenter.RemoveRegionDialogPresenter;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.dialog.RemoveRegionDialogPresenter.RemoveRegionDialogPresenterImpl;
 import com.example.sergey.geofencingwithrealmapplication.R;
+import com.example.sergey.geofencingwithrealmapplication.Service.GeofenceService;
 import com.example.sergey.geofencingwithrealmapplication.View.dialog.base.CustomAlertDialogBuilder;
 import com.example.sergey.geofencingwithrealmapplication.View.dialog.base.DialogView;
 
@@ -49,9 +51,9 @@ public class RemoveRegionDialog extends DialogFragment implements DialogView {
                 .setTitle(R.string.remove_region_dialog_title)
                 .setPositiveButton(R.string.remove_region_dialog_positive_button_text, view -> {
                     presenter.onConfirmRemoveRegionButtonClick(regionId);
-                    dismiss();
+                    hide();
                 })
-                .setNegativeButton(R.string.remove_region_dialog_negative_button_text, view -> dismiss())
+                .setNegativeButton(R.string.remove_region_dialog_negative_button_text, view -> presenter.onNegativeButtonClick())
                 .create();
     }
 
@@ -76,5 +78,17 @@ public class RemoveRegionDialog extends DialogFragment implements DialogView {
 
         setCancelable(false);
         show(((FragmentActivity) context).getSupportFragmentManager(), TAG);
+    }
+
+    @Override
+    public void hide() {
+        dismiss();
+    }
+
+    @Override
+    public void sendGeofenceServiceEvent(@NonNull GeofenceService.TypeOperation typeOperation) {
+        Intent intent = new Intent(getContext(), GeofenceService.class)
+                .putExtra(GeofenceService.TYPE_OPERATION_EXTRA, typeOperation);
+        getContext().startService(intent);
     }
 }
