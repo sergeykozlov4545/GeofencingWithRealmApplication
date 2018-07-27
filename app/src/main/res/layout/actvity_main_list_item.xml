@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="13dp"
+    android:layout_marginLeft="13dp"
+    android:layout_marginRight="13dp"
+    android:layout_marginStart="13dp"
+    app:cardBackgroundColor="@color/log_event_list_item_background_color"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="0dp"
+    app:cardUseCompatPadding="true"
+    app:contentPadding="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:text="@string/activity_main_item_event_label"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/eventView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:text="@string/activity_main_item_region_label"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/regionNameView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:text="@string/activity_main_item_registered_regions_label"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/registeredRegionsView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

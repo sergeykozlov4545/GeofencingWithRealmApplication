@@ -7,32 +7,50 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.widget.Button;
+import android.view.View;
+import android.widget.TextView;
 
+import com.example.sergey.geofencingwithrealmapplication.Model.LogEvent;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.main.MainActivityPresenter;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.main.MainActivityPresenterImpl;
 import com.example.sergey.geofencingwithrealmapplication.R;
 import com.example.sergey.geofencingwithrealmapplication.Service.GeofenceService;
+import com.example.sergey.geofencingwithrealmapplication.View.adapter.LogListAdapter;
 import com.example.sergey.geofencingwithrealmapplication.View.main.MainActivityView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.realm.OrderedRealmCollection;
 
 public class MainActivity extends AppCompatActivity implements MainActivityView {
 
     private static final int PERMISSION_REQUEST_CODE = 100;
 
+    @BindView(R.id.content)
+    View contentView;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.toolbar_title)
+    TextView toolbarTitleView;
+
+    @BindView(R.id.logList)
+    RecyclerView logList;
+
     @BindView(R.id.trackButton)
-    Button trackButton;
+    FloatingActionButton trackButton;
 
     private MainActivityPresenter presenter;
     private boolean trackGeozones;
+    private LogListAdapter logListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +59,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
         ButterKnife.bind(this);
 
-        initToolbar();
-
-        presenter = new MainActivityPresenterImpl();
+        initView();
+        initPresenter();
     }
 
     @Override
@@ -86,10 +103,25 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     }
 
     @Override
-    public void updateTrackButtonText() {
-        trackButton.setText(!trackGeozones
-                ? R.string.activity_main_start_button_text
-                : R.string.activity_main_stop_button_text);
+    public void updateTrackButton() {
+        trackButton.setImageResource(trackGeozones
+                ? R.drawable.ic_track_location_on_white_24dp
+                : R.drawable.ic_track_location_off_white_24dp);
+    }
+
+    @Override
+    public void showEnabledTrackLocationMessage() {
+        Snackbar.make(contentView, R.string.activity_main_track_location_on, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showDisabledTrackLocationMessage() {
+        Snackbar.make(contentView, R.string.activity_main_track_location_off, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void updateLogData(@NonNull OrderedRealmCollection<LogEvent> logEvents) {
+        logListAdapter.updateData(logEvents);
     }
 
     @Override
@@ -109,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         presenter.onTrackButtonClicked(trackGeozones);
     }
 
-    private void initToolbar() {
+    private void initView() {
         toolbar.inflateMenu(R.menu.activity_main_menu);
         toolbar.setOnMenuItemClickListener(menuItem -> {
 
@@ -119,6 +151,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
             return false;
         });
+        toolbarTitleView.setText(R.string.activity_main_toolbar_title);
+
+        logList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        logListAdapter = new LogListAdapter();
+        logList.setAdapter(logListAdapter);
+    }
+
+    private void initPresenter() {
+        presenter = new MainActivityPresenterImpl();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)

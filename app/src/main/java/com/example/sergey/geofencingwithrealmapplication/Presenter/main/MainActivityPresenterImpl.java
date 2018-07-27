@@ -19,7 +19,7 @@ public class MainActivityPresenterImpl
 
         if (view != null) {
             view.updateTrackState(!registeredRegions.isEmpty());
-            view.updateTrackButtonText();
+            view.updateTrackButton();
         }
     }
 
@@ -32,11 +32,13 @@ public class MainActivityPresenterImpl
         if (view != null) {
             // TODO: 27.07.18 Нужно делать проверку на существование хотябы одной зоны
             view.updateTrackState(newTrackZonesState);
-            view.updateTrackButtonText();
+            view.updateTrackButton();
 
             if (newTrackZonesState) {
+                view.showEnabledTrackLocationMessage();
                 view.sendGeofenceServiceEvent(GeofenceService.TypeOperation.REGISTER_ALL_REGIONS);
             } else {
+                view.showDisabledTrackLocationMessage();
                 view.sendGeofenceServiceEvent(GeofenceService.TypeOperation.UNREGISTER_ALL_REGIONS);
             }
         }

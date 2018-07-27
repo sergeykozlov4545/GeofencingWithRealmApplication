@@ -30,10 +30,8 @@ public class RegionListAdapter extends RealmRecyclerViewAdapter<Region, RegionLi
     public void onBindViewHolder(@NonNull RegionListViewHolder regionListViewHolder, int position) {
         OrderedRealmCollection<Region> data = getData();
 
-        if (data == null || position >= data.size()) {
-            return;
+        if (data != null && position < data.size()) {
+            regionListViewHolder.bindViewHolder(data.get(position));
         }
-
-        regionListViewHolder.bindViewHolder(data.get(position));
     }
 }

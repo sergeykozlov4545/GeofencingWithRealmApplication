@@ -2,8 +2,15 @@
     <string name="app_name">GeofencingWithRealmApplication</string>
 
     <!--activities-->
-    <string name="activity_main_start_button_text">Начать слежку</string>
-    <string name="activity_main_stop_button_text">Отменить слежку</string>
+    <string name="activity_main_toolbar_title">@string/app_name</string>
+    <string name="activity_main_track_location_on">Слежка включена</string>
+    <string name="activity_main_track_location_off">Слежка отключена</string>
+
+    <string name="activity_main_item_event_label">Событие: </string>
+    <string name="activity_main_item_event_enter">ENTER</string>
+    <string name="activity_main_item_event_exit">EXIT</string>
+    <string name="activity_main_item_region_label">Геозона: </string>
+    <string name="activity_main_item_registered_regions_label">Зарегистрированы: </string>
 
     <string name="activity_edit_points_toolbar_title">Редактирование зон</string>
     <string name="activity_edit_points_regions_list_is_empty">Список зон пуст</string>

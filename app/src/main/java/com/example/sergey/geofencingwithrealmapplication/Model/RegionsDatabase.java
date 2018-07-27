@@ -13,7 +13,7 @@ import io.realm.Realm;
 
 public final class RegionsDatabase {
 
-    private static RegionsDatabase instance;
+    private static volatile RegionsDatabase instance;
     private Realm realm;
 
     @NonNull
