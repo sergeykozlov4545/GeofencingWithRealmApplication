@@ -1,39 +1,43 @@
 package com.example.sergey.geofencingwithrealmapplication.Presenter.main;
 
+import android.support.annotation.NonNull;
+
 import com.example.sergey.geofencingwithrealmapplication.Model.LogEventDataBase;
-import com.example.sergey.geofencingwithrealmapplication.Model.Region;
 import com.example.sergey.geofencingwithrealmapplication.Model.RegionsDatabase;
+import com.example.sergey.geofencingwithrealmapplication.Model.TrackPreference;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.base.BasePresenter;
 import com.example.sergey.geofencingwithrealmapplication.R;
 import com.example.sergey.geofencingwithrealmapplication.Service.GeofenceService;
 import com.example.sergey.geofencingwithrealmapplication.View.main.MainActivityView;
 
-import java.util.List;
-
 public class MainActivityPresenterImpl
         extends BasePresenter<MainActivityView> implements MainActivityPresenter {
 
+    @NonNull
+    private TrackPreference trackPreference;
+
+    public MainActivityPresenterImpl(@NonNull TrackPreference trackPreference) {
+        this.trackPreference = trackPreference;
+    }
+
     @Override
     public void viewIsReady() {
-        List<Region> registeredRegions = RegionsDatabase.getInstance().getRegisteredRegions();
-
         MainActivityView view = getView();
 
         if (view != null) {
-            view.updateTrackState(!registeredRegions.isEmpty());
-            view.updateTrackButton();
+            view.updateTrackButton(trackPreference.getTrackState());
             view.updateLogData(LogEventDataBase.getInstance().getEvents());
         }
     }
 
     @Override
-    public void onTrackButtonClicked(boolean trackZones) {
+    public void onTrackButtonClicked() {
         MainActivityView view = getView();
         if (view == null) {
             return;
         }
 
-        boolean newTrackZonesState = !trackZones;
+        boolean newTrackZonesState = !trackPreference.getTrackState();
 
         if (RegionsDatabase.getInstance().getRegions().isEmpty()
                 && newTrackZonesState) {
@@ -41,9 +45,8 @@ public class MainActivityPresenterImpl
             return;
         }
 
-        view.updateTrackState(newTrackZonesState);
-        view.updateTrackButton();
-
+        trackPreference.setTrackState(newTrackZonesState);
+        view.updateTrackButton(newTrackZonesState);
         view.showMessage(newTrackZonesState
                 ? R.string.activity_main_track_location_on
                 : R.string.activity_main_track_location_off);

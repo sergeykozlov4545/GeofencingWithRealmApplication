@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.sergey.geofencingwithrealmapplication.Model.LogEvent;
+import com.example.sergey.geofencingwithrealmapplication.Model.TrackPreference;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.main.MainActivityPresenter;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.main.MainActivityPresenterImpl;
 import com.example.sergey.geofencingwithrealmapplication.R;
@@ -51,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     FloatingActionButton trackButton;
 
     private MainActivityPresenter presenter;
-    private boolean trackGeozones;
     private LogListAdapter logListAdapter;
 
     @Override
@@ -100,13 +100,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     }
 
     @Override
-    public void updateTrackState(boolean trackZones) {
-        this.trackGeozones = trackZones;
-    }
-
-    @Override
-    public void updateTrackButton() {
-        trackButton.setImageResource(trackGeozones
+    public void updateTrackButton(boolean trackState) {
+        trackButton.setImageResource(trackState
                 ? R.drawable.ic_track_location_on_white_24dp
                 : R.drawable.ic_track_location_off_white_24dp);
     }
@@ -140,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
     @OnClick(R.id.trackButton)
     void onTrackButtonClicked() {
-        presenter.onTrackButtonClicked(trackGeozones);
+        presenter.onTrackButtonClicked();
     }
 
     private void initView() {
@@ -165,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     }
 
     private void initPresenter() {
-        presenter = new MainActivityPresenterImpl();
+        presenter = new MainActivityPresenterImpl(new TrackPreference(getApplicationContext()));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)

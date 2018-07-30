@@ -10,9 +10,7 @@ import com.example.sergey.geofencingwithrealmapplication.View.base.MVPView;
 import io.realm.OrderedRealmCollection;
 
 public interface MainActivityView extends MVPView {
-    void updateTrackState(boolean trackZones);
-
-    void updateTrackButton();
+    void updateTrackButton(boolean trackState);
 
     void showMessage(@StringRes int messageRes);
 

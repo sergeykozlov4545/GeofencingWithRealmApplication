@@ -3,14 +3,12 @@ package com.example.sergey.geofencingwithrealmapplication.Service;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.example.sergey.geofencingwithrealmapplication.Model.TrackPreference;
 import com.example.sergey.geofencingwithrealmapplication.Service.util.GeofenceRegisterUtil;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
-
-import java.util.List;
 
 public class GeofenceService extends Service {
 
@@ -52,8 +50,11 @@ public class GeofenceService extends Service {
             }
 
             if (typeOperation == TypeOperation.REREGISTER_REGIONS) {
-                geofenceRegisterUtil.unregisterAllRegions();
-                geofenceRegisterUtil.registerAllRegions();
+                TrackPreference trackPreference = new TrackPreference(getApplicationContext());
+                if (trackPreference.getTrackState()) {
+                    geofenceRegisterUtil.unregisterAllRegions();
+                    geofenceRegisterUtil.registerAllRegions();
+                }
                 return;
             }
 
