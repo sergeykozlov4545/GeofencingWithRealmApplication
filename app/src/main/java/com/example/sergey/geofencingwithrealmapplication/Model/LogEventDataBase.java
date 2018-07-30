@@ -1,7 +1,9 @@
 package com.example.sergey.geofencingwithrealmapplication.Model;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
+import java.util.List;
 import java.util.UUID;
 
 import io.realm.OrderedRealmCollection;
@@ -35,14 +37,29 @@ public final class LogEventDataBase {
         return realm.where(LogEvent.class).findAll();
     }
 
-    public void addEvent(int transitionType, @NonNull String regionName, @NonNull RealmList<String> registeredRegions) {
-        realm.executeTransaction(r -> {
-            String id = UUID.randomUUID().toString();
-            r.insertOrUpdate(new LogEvent(id, transitionType, regionName, registeredRegions));
-        });
+    public void addEvent(int transitionType,
+                         @Nullable Region triggeringRegion,
+                         @NonNull List<Region> registeredRegions) {
+
+        String id = UUID.randomUUID().toString();
+        String triggeringRegionName = triggeringRegion == null ? "" : triggeringRegion.getName();
+        RealmList<String> registeredNamesRegions = getRegisteredNamesRegions(registeredRegions);
+
+        LogEvent event = new LogEvent(id, transitionType, triggeringRegionName, registeredNamesRegions);
+
+        realm.executeTransaction(r -> r.insertOrUpdate(event));
     }
 
     public void removeAllEvents() {
         realm.executeTransaction(r -> getEvents().deleteAllFromRealm());
+    }
+
+    @NonNull
+    private RealmList<String> getRegisteredNamesRegions(@NonNull List<Region> registeredRegions) {
+        RealmList<String> registeredNamesRegions = new RealmList<>();
+        for (Region region : registeredRegions) {
+            registeredNamesRegions.add(region.getName());
+        }
+        return registeredNamesRegions;
     }
 }

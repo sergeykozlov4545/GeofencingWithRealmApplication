@@ -5,10 +5,16 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
+import com.example.sergey.geofencingwithrealmapplication.Model.LogEventDataBase;
+import com.example.sergey.geofencingwithrealmapplication.Model.Region;
+import com.example.sergey.geofencingwithrealmapplication.Model.RegionsDatabase;
 import com.example.sergey.geofencingwithrealmapplication.Model.TrackPreference;
 import com.example.sergey.geofencingwithrealmapplication.Service.util.GeofenceRegisterUtil;
+import com.example.sergey.geofencingwithrealmapplication.Service.util.GeofencingEventParser;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
+
+import java.util.List;
 
 public class GeofenceService extends Service {
 
@@ -66,23 +72,27 @@ public class GeofenceService extends Service {
             return;
         }
 
-        GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
+        GeofencingEventParser parser = new GeofencingEventParser(GeofencingEvent.fromIntent(intent));
 
-        if (geofencingEvent.hasError()) {
+        if (parser.hasError()) {
             return;
         }
 
-        if (isTransitionEnter(geofencingEvent.getGeofenceTransition())) {
-            // TODO: 24.07.18 Вошли в зону, а значит чето делаем (notification, лог на MainActivity и т.д.)
+        if (parser.isTransitionEnter() && parser.getFirstTriggeringGeofence() != null) {
+            Region triggeringRegion = RegionsDatabase.getInstance()
+                    .getRegion(parser.getFirstTriggeringGeofence().getRequestId());
+
+            if (triggeringRegion != null) {
+                List<Region> regions = RegionsDatabase.getInstance().getRegisteredRegions();
+
+                LogEventDataBase.getInstance()
+                        .addEvent(Geofence.GEOFENCE_TRANSITION_ENTER, triggeringRegion, regions);
+            }
             return;
         }
 
         geofenceRegisterUtil.unregisterAllRegions();
-        geofenceRegisterUtil.registerNearRegions(geofencingEvent);
-    }
-
-    private boolean isTransitionEnter(int transitionType) {
-        return transitionType == Geofence.GEOFENCE_TRANSITION_ENTER;
+        geofenceRegisterUtil.registerNearRegions(parser);
     }
 
     @Nullable
