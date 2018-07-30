@@ -142,7 +142,7 @@ public class GeofenceRegisterUtil {
             super.onSuccess(aVoid);
 
             LogEventDataBase.getInstance()
-                    .addEvent(Geofence.GEOFENCE_TRANSITION_EXIT, getNearRegion(), getRegions());
+                    .addEvent(parser.getTransitionType(), getNearRegion(), getRegions());
         }
 
         @Nullable

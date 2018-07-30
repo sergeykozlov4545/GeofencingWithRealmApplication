@@ -78,7 +78,11 @@ public class GeofenceService extends Service {
             return;
         }
 
-        if (parser.isTransitionEnter() && parser.getFirstTriggeringGeofence() != null) {
+        if (parser.isTransitionEnter()) {
+            if (parser.getFirstTriggeringGeofence() == null) {
+                return;
+            }
+
             Region triggeringRegion = RegionsDatabase.getInstance()
                     .getRegion(parser.getFirstTriggeringGeofence().getRequestId());
 
@@ -86,8 +90,9 @@ public class GeofenceService extends Service {
                 List<Region> regions = RegionsDatabase.getInstance().getRegisteredRegions();
 
                 LogEventDataBase.getInstance()
-                        .addEvent(Geofence.GEOFENCE_TRANSITION_ENTER, triggeringRegion, regions);
+                        .addEvent(parser.getTransitionType(), triggeringRegion, regions);
             }
+
             return;
         }
 

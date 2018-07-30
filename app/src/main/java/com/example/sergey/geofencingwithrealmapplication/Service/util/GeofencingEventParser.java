@@ -31,6 +31,10 @@ public class GeofencingEventParser {
         return hasError;
     }
 
+    public int getTransitionType() {
+        return transitionType;
+    }
+
     public boolean isTransitionEnter() {
         return transitionType == Geofence.GEOFENCE_TRANSITION_ENTER;
     }
