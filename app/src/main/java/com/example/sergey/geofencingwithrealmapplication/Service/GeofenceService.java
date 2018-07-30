@@ -30,6 +30,12 @@ public class GeofenceService extends Service {
         return START_STICKY;
     }
 
+    public enum TypeOperation {
+        REGISTER_ALL_REGIONS,
+        UNREGISTER_ALL_REGIONS,
+        REREGISTER_REGIONS
+    }
+
     private void work(@Nullable Intent intent) {
         if (intent == null) {
             return;
@@ -55,7 +61,6 @@ public class GeofenceService extends Service {
                     geofenceRegisterUtil.unregisterAllRegions();
                     geofenceRegisterUtil.registerAllRegions();
                 }
-                return;
             }
 
             return;
@@ -73,8 +78,7 @@ public class GeofenceService extends Service {
         }
 
         geofenceRegisterUtil.unregisterAllRegions();
-        geofenceRegisterUtil.registerNearRegions(
-                geofencingEvent.getTriggeringLocation(), geofencingEvent);
+        geofenceRegisterUtil.registerNearRegions(geofencingEvent);
     }
 
     private boolean isTransitionEnter(int transitionType) {
@@ -85,11 +89,5 @@ public class GeofenceService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
-    }
-
-    public enum TypeOperation {
-        REGISTER_ALL_REGIONS,
-        UNREGISTER_ALL_REGIONS,
-        REREGISTER_REGIONS
     }
 }

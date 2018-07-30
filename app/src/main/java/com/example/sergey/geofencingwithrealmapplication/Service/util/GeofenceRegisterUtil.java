@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
 import android.support.annotation.NonNull;
 
 import com.example.sergey.geofencingwithrealmapplication.Model.LogEventDataBase;
@@ -49,13 +48,13 @@ public class GeofenceRegisterUtil {
         regionsDatabase.unregisterAllRegions();
     }
 
-    public void registerNearRegions(@NonNull Location location, @NonNull GeofencingEvent geofencingEvent) {
+    public void registerNearRegions(@NonNull GeofencingEvent geofencingEvent) {
         Region lastRegion = regionsDatabase.getRegion(getFirstRegionId(geofencingEvent));
         if (lastRegion == null) {
             return;
         }
 
-        List<Region> nearRegions = NearRegionsUtil.getNearRegions(lastRegion, location);
+        List<Region> nearRegions = NearRegionsUtil.getNearRegions(lastRegion, geofencingEvent.getTriggeringLocation());
         nearRegions.add(lastRegion);
         if (!nearRegions.isEmpty()) {
             addGeofences(nearRegions);
