@@ -31,6 +31,9 @@ public class EditPointActivity extends AppCompatActivity implements EditPointAct
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.toolbar_title)
+    TextView toolbarTitleView;
+
     @BindView(R.id.progress)
     ProgressBar progressBar;
 
@@ -54,15 +57,8 @@ public class EditPointActivity extends AppCompatActivity implements EditPointAct
 
         ButterKnife.bind(this);
 
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
-        toolbar.setNavigationOnClickListener((v) -> presenter.onNavigationButtonClick());
-        toolbar.setContentInsetStartWithNavigation(0);
-
-        regionsList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        regionListAdapter = new RegionListAdapter();
-        regionsList.setAdapter(regionListAdapter);
-
-        presenter = new EditPointPresenterImpl(RegionsDatabase.getInstance());
+        initView();
+        initPresenter();
     }
 
     @Override
@@ -124,5 +120,20 @@ public class EditPointActivity extends AppCompatActivity implements EditPointAct
     @Override
     public EditPointPresenter getPresenter() {
         return presenter;
+    }
+
+    private void initView() {
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        toolbar.setNavigationOnClickListener((v) -> presenter.onNavigationButtonClick());
+        toolbar.setContentInsetStartWithNavigation(0);
+        toolbarTitleView.setText(R.string.activity_edit_points_toolbar_title);
+
+        regionsList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        regionListAdapter = new RegionListAdapter();
+        regionsList.setAdapter(regionListAdapter);
+    }
+
+    private void initPresenter() {
+        presenter = new EditPointPresenterImpl(RegionsDatabase.getInstance());
     }
 }

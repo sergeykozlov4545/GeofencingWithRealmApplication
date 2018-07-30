@@ -1,14 +1,11 @@
 package com.example.sergey.geofencingwithrealmapplication.View.dialog.EditRegionDialog;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,13 +17,14 @@ import com.example.sergey.geofencingwithrealmapplication.Presenter.dialog.EditRe
 import com.example.sergey.geofencingwithrealmapplication.R;
 import com.example.sergey.geofencingwithrealmapplication.View.dialog.base.CustomAlertDialogBuilder;
 import com.example.sergey.geofencingwithrealmapplication.View.dialog.base.DialogView;
+import com.example.sergey.geofencingwithrealmapplication.View.dialog.base.RegionDialogImpl;
+import com.google.android.gms.maps.model.LatLng;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class EditRegionDialog extends DialogFragment implements EditRegionDialogView {
+public class EditRegionDialog extends RegionDialogImpl implements EditRegionDialogView {
 
-    private static final String TAG = "edit_region_dialog";
     private static final String REGION_ID_EXTRA = "region_id_extra";
 
     @BindView(R.id.content)
@@ -82,15 +80,16 @@ public class EditRegionDialog extends DialogFragment implements EditRegionDialog
                     }
 
                     String regionName = nameView.getText().toString();
+
                     double latitude = Double.parseDouble(latitudeView.getText().toString());
                     double longitude = Double.parseDouble(longitudeView.getText().toString());
+                    LatLng center = new LatLng(latitude, longitude);
+
                     int radius = Integer.parseInt(radiusView.getText().toString());
 
-                    presenter.onConfirmEditRegionButtonClick(regionId, regionName, latitude, longitude, radius);
-
-                    dismiss();
+                    presenter.onConfirmEditRegionButtonClick(regionId, regionName, center, radius);
                 })
-                .setNegativeButton(R.string.edit_region_dialog_negative_button_text, view -> dismiss())
+                .setNegativeButton(R.string.edit_region_dialog_negative_button_text, view -> presenter.onNegativeButtonClick())
                 .create();
     }
 
@@ -109,20 +108,10 @@ public class EditRegionDialog extends DialogFragment implements EditRegionDialog
     }
 
     @Override
-    public void show(@NonNull Context context) {
-        if (!(context instanceof FragmentActivity)) {
-            throw new RuntimeException("context doesn't implements FragmentActivity");
-        }
-
-        setCancelable(false);
-        show(((FragmentActivity) context).getSupportFragmentManager(), TAG);
-    }
-
-    @Override
     public void updateView(@NonNull Region region) {
         nameView.setText(region.getName());
-        latitudeView.setText(String.valueOf(region.getLatitude()));
-        longitudeView.setText(String.valueOf(region.getLongitude()));
+        latitudeView.setText(String.valueOf(region.getCenter().getLatitude()));
+        longitudeView.setText(String.valueOf(region.getCenter().getLongitude()));
         radiusView.setText(String.valueOf(region.getRadius()));
     }
 

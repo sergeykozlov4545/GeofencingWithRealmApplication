@@ -44,7 +44,7 @@ public class RegionListViewHolder extends RecyclerView.ViewHolder {
     public void bindViewHolder(@NonNull Region region) {
         this.region = region;
         nameRegionView.setText(region.getName());
-        positionRegionView.setText(String.format("%s, %s", region.getLatitude(), region.getLongitude()));
+        positionRegionView.setText(region.getCenter().toString());
         radiusRegionView.setText(String.valueOf(region.getRadius()));
     }
 

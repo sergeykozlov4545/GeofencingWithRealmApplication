@@ -2,11 +2,14 @@ package com.example.sergey.geofencingwithrealmapplication.Presenter.dialog.AddRe
 
 import android.support.annotation.NonNull;
 
+import com.example.sergey.geofencingwithrealmapplication.Model.RealmLatLng;
 import com.example.sergey.geofencingwithrealmapplication.Model.RegionsDatabase;
-import com.example.sergey.geofencingwithrealmapplication.Presenter.base.BasePresenter;
-import com.example.sergey.geofencingwithrealmapplication.View.dialog.base.DialogView;
+import com.example.sergey.geofencingwithrealmapplication.Presenter.base.DialogPresenter;
+import com.example.sergey.geofencingwithrealmapplication.Service.GeofenceService;
+import com.example.sergey.geofencingwithrealmapplication.View.dialog.base.RegionDialog;
 
-public class AddRegionDialogPresenterImpl extends BasePresenter<DialogView> implements AddRegionDialogPresenter {
+public class AddRegionDialogPresenterImpl
+        extends DialogPresenter<RegionDialog> implements AddRegionDialogPresenter {
 
     @NonNull
     private RegionsDatabase regionsDatabase;
@@ -16,12 +19,19 @@ public class AddRegionDialogPresenterImpl extends BasePresenter<DialogView> impl
     }
 
     @Override
-    public void viewIsReady() {
-
+    public void onConfirmAddRegionButtonClick(@NonNull String name,
+                                              @NonNull RealmLatLng center,
+                                              int radius) {
+        regionsDatabase.addRegion(name, center, radius);
+        RegionDialog view = getView();
+        if (view != null) {
+            view.sendGeofenceServiceEvent(GeofenceService.TypeOperation.REREGISTER_REGIONS);
+        }
+        hideDialog();
     }
 
     @Override
-    public void onConfirmAddRegionButtonClick(@NonNull String name, double latitude, double longitude, int radius) {
-        regionsDatabase.addRegion(name, latitude, longitude, radius);
+    public void onNegativeButtonClick() {
+        hideDialog();
     }
 }

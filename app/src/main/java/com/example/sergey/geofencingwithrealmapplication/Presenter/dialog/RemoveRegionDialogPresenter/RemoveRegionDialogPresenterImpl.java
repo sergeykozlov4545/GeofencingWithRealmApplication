@@ -3,11 +3,12 @@ package com.example.sergey.geofencingwithrealmapplication.Presenter.dialog.Remov
 import android.support.annotation.NonNull;
 
 import com.example.sergey.geofencingwithrealmapplication.Model.RegionsDatabase;
-import com.example.sergey.geofencingwithrealmapplication.Presenter.base.BasePresenter;
-import com.example.sergey.geofencingwithrealmapplication.View.dialog.base.DialogView;
+import com.example.sergey.geofencingwithrealmapplication.Presenter.base.DialogPresenter;
+import com.example.sergey.geofencingwithrealmapplication.Service.GeofenceService;
+import com.example.sergey.geofencingwithrealmapplication.View.dialog.base.RegionDialog;
 
 public class RemoveRegionDialogPresenterImpl
-        extends BasePresenter<DialogView> implements RemoveRegionDialogPresenter {
+        extends DialogPresenter<RegionDialog> implements RemoveRegionDialogPresenter {
 
     @NonNull
     private RegionsDatabase regionsDatabase;
@@ -17,12 +18,17 @@ public class RemoveRegionDialogPresenterImpl
     }
 
     @Override
-    public void viewIsReady() {
-
+    public void onConfirmRemoveRegionButtonClick(@NonNull String regionId) {
+        regionsDatabase.removeRegion(regionId);
+        RegionDialog view = getView();
+        if (view != null) {
+            view.sendGeofenceServiceEvent(GeofenceService.TypeOperation.REREGISTER_REGIONS);
+        }
+        hideDialog();
     }
 
     @Override
-    public void onConfirmRemoveRegionButtonClick(@NonNull String regionId) {
-        regionsDatabase.removeRegion(regionId);
+    public void onNegativeButtonClick() {
+        hideDialog();
     }
 }

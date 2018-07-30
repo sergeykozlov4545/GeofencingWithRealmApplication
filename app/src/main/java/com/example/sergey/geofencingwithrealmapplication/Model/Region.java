@@ -1,26 +1,27 @@
 package com.example.sergey.geofencingwithrealmapplication.Model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import android.support.annotation.NonNull;
+
+import com.google.android.gms.location.Geofence;
 
 import io.realm.RealmObject;
 
-public class Region extends RealmObject implements Parcelable {
+public class Region extends RealmObject {
+    private static final int TWELVE_HOURS = 12 * 60 * 60 * 1000;
 
     private String id;
     private String name;
-    private double latitude;
-    private double longitude;
+    private RealmLatLng center;
     private int radius;
+    private boolean registered;
 
     public Region() {
     }
 
-    public Region(String id, String name, double latitude, double longitude, int radius) {
+    public Region(String id, String name, RealmLatLng center, int radius) {
         this.id = id;
         this.name = name;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.center = center;
         this.radius = radius;
     }
 
@@ -36,20 +37,12 @@ public class Region extends RealmObject implements Parcelable {
         this.name = name;
     }
 
-    public double getLatitude() {
-        return latitude;
+    public RealmLatLng getCenter() {
+        return center;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    public void setCenter(RealmLatLng center) {
+        this.center = center;
     }
 
     public int getRadius() {
@@ -60,36 +53,17 @@ public class Region extends RealmObject implements Parcelable {
         this.radius = radius;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public void setRegistered(boolean registered) {
+        this.registered = registered;
     }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(name);
-        parcel.writeDouble(latitude);
-        parcel.writeDouble(longitude);
-        parcel.writeInt(radius);
+    @NonNull
+    public Geofence toGeofence() {
+        return new Geofence.Builder()
+                .setRequestId(id)
+                .setCircularRegion(center.getLatitude(), center.getLongitude(), radius)
+                .setExpirationDuration(TWELVE_HOURS)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
+                .build();
     }
-
-    private Region(Parcel in) {
-        name = in.readString();
-        latitude = in.readDouble();
-        longitude = in.readDouble();
-        radius = in.readInt();
-    }
-
-    public static final Creator<Region> CREATOR = new Creator<Region>() {
-        @Override
-        public Region createFromParcel(Parcel in) {
-            return new Region(in);
-        }
-
-        @Override
-        public Region[] newArray(int size) {
-            return new Region[size];
-        }
-    };
-
 }

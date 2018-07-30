@@ -7,4 +7,6 @@ import com.example.sergey.geofencingwithrealmapplication.View.base.MVPView;
 
 public interface DialogView extends MVPView {
     void show(@NonNull Context context);
+
+    void hide();
 }

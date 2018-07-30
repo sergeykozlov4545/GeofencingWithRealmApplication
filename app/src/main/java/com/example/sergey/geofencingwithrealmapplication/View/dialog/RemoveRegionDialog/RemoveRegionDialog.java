@@ -1,12 +1,9 @@
 package com.example.sergey.geofencingwithrealmapplication.View.dialog.RemoveRegionDialog;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 
 import com.example.sergey.geofencingwithrealmapplication.Model.RegionsDatabase;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.dialog.RemoveRegionDialogPresenter.RemoveRegionDialogPresenter;
@@ -14,10 +11,10 @@ import com.example.sergey.geofencingwithrealmapplication.Presenter.dialog.Remove
 import com.example.sergey.geofencingwithrealmapplication.R;
 import com.example.sergey.geofencingwithrealmapplication.View.dialog.base.CustomAlertDialogBuilder;
 import com.example.sergey.geofencingwithrealmapplication.View.dialog.base.DialogView;
+import com.example.sergey.geofencingwithrealmapplication.View.dialog.base.RegionDialogImpl;
 
-public class RemoveRegionDialog extends DialogFragment implements DialogView {
+public class RemoveRegionDialog extends RegionDialogImpl {
 
-    private static final String TAG = "remove_region_dialog";
     private static final String REGION_ID_EXTRA = "region_id_extra";
 
     private String regionId;
@@ -47,11 +44,10 @@ public class RemoveRegionDialog extends DialogFragment implements DialogView {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         return new CustomAlertDialogBuilder(getContext())
                 .setTitle(R.string.remove_region_dialog_title)
-                .setPositiveButton(R.string.remove_region_dialog_positive_button_text, view -> {
-                    presenter.onConfirmRemoveRegionButtonClick(regionId);
-                    dismiss();
-                })
-                .setNegativeButton(R.string.remove_region_dialog_negative_button_text, view -> dismiss())
+                .setPositiveButton(R.string.remove_region_dialog_positive_button_text,
+                        view -> presenter.onConfirmRemoveRegionButtonClick(regionId))
+                .setNegativeButton(R.string.remove_region_dialog_negative_button_text,
+                        view -> presenter.onNegativeButtonClick())
                 .create();
     }
 
@@ -66,15 +62,5 @@ public class RemoveRegionDialog extends DialogFragment implements DialogView {
     public void onPause() {
         super.onPause();
         presenter.detachView();
-    }
-
-    @Override
-    public void show(@NonNull Context context) {
-        if (!(context instanceof FragmentActivity)) {
-            throw new RuntimeException("context doesn't implements FragmentActivity");
-        }
-
-        setCancelable(false);
-        show(((FragmentActivity) context).getSupportFragmentManager(), TAG);
     }
 }

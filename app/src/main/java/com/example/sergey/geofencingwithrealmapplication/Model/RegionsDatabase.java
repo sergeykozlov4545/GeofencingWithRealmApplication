@@ -3,15 +3,17 @@ package com.example.sergey.geofencingwithrealmapplication.Model;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.List;
 import java.util.UUID;
 
 import io.realm.OrderedRealmCollection;
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 public final class RegionsDatabase {
 
-    private static RegionsDatabase instance;
+    private static volatile RegionsDatabase instance;
     private Realm realm;
 
     @NonNull
@@ -31,15 +33,9 @@ public final class RegionsDatabase {
         realm = Realm.getDefaultInstance();
     }
 
-    public void getRegions(@NonNull LoadRegionsCallback callback) {
-        RealmResults<Region> data = realm.where(Region.class).findAll();
-
-        if (data.size() == 0) {
-            callback.dataIsEmpty();
-            return;
-        }
-
-        callback.dataIsLoaded(data);
+    @NonNull
+    public OrderedRealmCollection<Region> getRegions() {
+        return realm.where(Region.class).findAll();
     }
 
     @Nullable
@@ -47,10 +43,10 @@ public final class RegionsDatabase {
         return realm.where(Region.class).equalTo("id", regionId).findFirst();
     }
 
-    public void addRegion(@NonNull String name, double latitude, double longitude, int radius) {
+    public void addRegion(@NonNull String name, @NonNull RealmLatLng center, int radius) {
         realm.executeTransaction(r -> {
             String id = UUID.randomUUID().toString();
-            r.insertOrUpdate(new Region(id, name, latitude, longitude, radius));
+            r.insertOrUpdate(new Region(id, name, center, radius));
         });
     }
 
@@ -63,24 +59,43 @@ public final class RegionsDatabase {
         realm.executeTransaction(r -> region.deleteFromRealm());
     }
 
-    public void updateRegion(@NonNull String regionId, @NonNull String name, double latitude, double longitude, int radius) {
+    public void updateRegion(@NonNull String regionId,
+                             @NonNull String name,
+                             @NonNull LatLng center,
+                             int radius) {
         Region region = realm.where(Region.class).equalTo("id", regionId).findFirst();
         if (region == null) {
             return;
         }
 
         realm.executeTransaction(r -> {
+            RealmLatLng realmCenter = region.getCenter();
+            realmCenter.setLatitude(center.latitude);
+            realmCenter.setLongitude(center.longitude);
+
             region.setName(name);
-            region.setLatitude(latitude);
-            region.setLongitude(longitude);
             region.setRadius(radius);
         });
     }
 
-    public interface LoadRegionsCallback {
-        void dataIsLoaded(@NonNull OrderedRealmCollection<Region> data);
-
-        void dataIsEmpty();
+    public void registerRegions(@NonNull List<Region> regions) {
+        realm.executeTransaction(r -> {
+            for (Region region : regions) {
+                region.setRegistered(true);
+            }
+        });
     }
 
+    public void unregisterAllRegions() {
+        realm.executeTransaction(r -> {
+            for (Region region : getRegisteredRegions()) {
+                region.setRegistered(false);
+            }
+        });
+    }
+
+    @NonNull
+    public List<Region> getRegisteredRegions() {
+        return realm.where(Region.class).equalTo("registered", true).findAll();
+    }
 }

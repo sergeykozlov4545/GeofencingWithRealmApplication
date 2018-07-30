@@ -2,8 +2,19 @@
     <string name="app_name">GeofencingWithRealmApplication</string>
 
     <!--activities-->
-    <string name="activity_main_start_button_text">Начать слежку</string>
-    <string name="activity_main_stop_button_text">Отменить слежку</string>
+    <string name="activity_main_toolbar_title">@string/app_name</string>
+
+    <string name="activity_main_toolbar_clear_log_text">Чистка логов</string>
+
+    <string name="activity_main_track_location_on">Слежка включена</string>
+    <string name="activity_main_track_location_off">Слежка отключена</string>
+    <string name="activity_main_track_location_empty_regions_list">Список зон пуст</string>
+
+    <string name="activity_main_item_event_label">Событие: </string>
+    <string name="activity_main_item_event_enter">ENTER</string>
+    <string name="activity_main_item_event_exit">EXIT</string>
+    <string name="activity_main_item_region_label">Геозона: </string>
+    <string name="activity_main_item_registered_regions_label">Зарегистрированы: </string>
 
     <string name="activity_edit_points_toolbar_title">Редактирование зон</string>
     <string name="activity_edit_points_regions_list_is_empty">Список зон пуст</string>
@@ -29,5 +40,9 @@
     <string name="remove_region_dialog_title">Удалить зону?</string>
     <string name="remove_region_dialog_positive_button_text">Удалить</string>
     <string name="remove_region_dialog_negative_button_text">Отмена</string>
+
+    <string name="clear_log_dialog_title">Очистить лог?</string>
+    <string name="clear_log_dialog_positive_button_text">Да</string>
+    <string name="clear_log_dialog_negative_button_text">Нет</string>
 
 </resources>
