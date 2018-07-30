@@ -8,6 +8,7 @@
 
     <string name="activity_main_track_location_on">Слежка включена</string>
     <string name="activity_main_track_location_off">Слежка отключена</string>
+    <string name="activity_main_track_location_empty_regions_list">Список зон пуст</string>
 
     <string name="activity_main_item_event_label">Событие: </string>
     <string name="activity_main_item_event_enter">ENTER</string>

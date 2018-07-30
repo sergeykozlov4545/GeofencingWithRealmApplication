@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.annotation.StringRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -111,13 +112,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     }
 
     @Override
-    public void showEnabledTrackLocationMessage() {
-        Snackbar.make(contentView, R.string.activity_main_track_location_on, Snackbar.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void showDisabledTrackLocationMessage() {
-        Snackbar.make(contentView, R.string.activity_main_track_location_off, Snackbar.LENGTH_SHORT).show();
+    public void showMessage(@StringRes int messageRes) {
+        Snackbar.make(contentView, messageRes, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

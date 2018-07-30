@@ -4,6 +4,7 @@ import com.example.sergey.geofencingwithrealmapplication.Model.LogEventDataBase;
 import com.example.sergey.geofencingwithrealmapplication.Model.Region;
 import com.example.sergey.geofencingwithrealmapplication.Model.RegionsDatabase;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.base.BasePresenter;
+import com.example.sergey.geofencingwithrealmapplication.R;
 import com.example.sergey.geofencingwithrealmapplication.Service.GeofenceService;
 import com.example.sergey.geofencingwithrealmapplication.View.main.MainActivityView;
 
@@ -27,23 +28,28 @@ public class MainActivityPresenterImpl
 
     @Override
     public void onTrackButtonClicked(boolean trackZones) {
+        MainActivityView view = getView();
+        if (view == null) {
+            return;
+        }
+
         boolean newTrackZonesState = !trackZones;
 
-        MainActivityView view = getView();
-
-        if (view != null) {
-            // TODO: 27.07.18 Нужно делать проверку на существование хотябы одной зоны
-            view.updateTrackState(newTrackZonesState);
-            view.updateTrackButton();
-
-            if (newTrackZonesState) {
-                view.showEnabledTrackLocationMessage();
-                view.sendGeofenceServiceEvent(GeofenceService.TypeOperation.REGISTER_ALL_REGIONS);
-            } else {
-                view.showDisabledTrackLocationMessage();
-                view.sendGeofenceServiceEvent(GeofenceService.TypeOperation.UNREGISTER_ALL_REGIONS);
-            }
+        if (RegionsDatabase.getInstance().getRegions().isEmpty()
+                && newTrackZonesState) {
+            view.showMessage(R.string.activity_main_track_location_empty_regions_list);
+            return;
         }
+
+        view.updateTrackState(newTrackZonesState);
+        view.updateTrackButton();
+
+        view.showMessage(newTrackZonesState
+                ? R.string.activity_main_track_location_on
+                : R.string.activity_main_track_location_off);
+        view.sendGeofenceServiceEvent(newTrackZonesState
+                ? GeofenceService.TypeOperation.REGISTER_ALL_REGIONS
+                : GeofenceService.TypeOperation.UNREGISTER_ALL_REGIONS);
     }
 
     @Override
