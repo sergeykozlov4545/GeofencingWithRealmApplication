@@ -22,4 +22,6 @@ public interface MainActivityView extends MVPView {
     void sendGeofenceServiceEvent(@NonNull GeofenceService.TypeOperation typeOperation);
 
     void showEditPointActivity();
+
+    void showClearLogDialog();
 }

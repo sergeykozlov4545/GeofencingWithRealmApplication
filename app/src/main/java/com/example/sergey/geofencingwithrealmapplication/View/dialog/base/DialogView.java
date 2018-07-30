@@ -11,5 +11,6 @@ public interface DialogView extends MVPView {
 
     void hide();
 
+    // TODO: 30.07.18 Вынести в отдельный интерфейс
     void sendGeofenceServiceEvent(@NonNull GeofenceService.TypeOperation typeOperation);
 }

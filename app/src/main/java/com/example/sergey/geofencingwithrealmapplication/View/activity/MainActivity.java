@@ -22,6 +22,7 @@ import com.example.sergey.geofencingwithrealmapplication.Presenter.main.MainActi
 import com.example.sergey.geofencingwithrealmapplication.R;
 import com.example.sergey.geofencingwithrealmapplication.Service.GeofenceService;
 import com.example.sergey.geofencingwithrealmapplication.View.adapter.LogListAdapter;
+import com.example.sergey.geofencingwithrealmapplication.View.dialog.ClearLogDialog.ClearLogDialog;
 import com.example.sergey.geofencingwithrealmapplication.View.main.MainActivityView;
 
 import butterknife.BindView;
@@ -134,6 +135,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     @Override
     public void showEditPointActivity() {
         startActivity(new Intent(MainActivity.this, EditPointActivity.class));
+    }
+
+    @Override
+    public void showClearLogDialog() {
+        new ClearLogDialog().show(this);
     }
 
     @OnClick(R.id.trackButton)

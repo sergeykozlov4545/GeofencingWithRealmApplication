@@ -40,4 +40,8 @@
     <string name="remove_region_dialog_positive_button_text">Удалить</string>
     <string name="remove_region_dialog_negative_button_text">Отмена</string>
 
+    <string name="clear_log_dialog_title">Очистить лог?</string>
+    <string name="clear_log_dialog_positive_button_text">Да</string>
+    <string name="clear_log_dialog_negative_button_text">Нет</string>
+
 </resources>

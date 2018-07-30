@@ -48,8 +48,10 @@ public class MainActivityPresenterImpl
 
     @Override
     public void onClearLogsActionToolbarClicked() {
-        // TODO: 27.07.18 Удаление через диалог
-        LogEventDataBase.getInstance().removeAllEvents();
+        MainActivityView view = getView();
+        if (view != null) {
+            view.showClearLogDialog();
+        }
     }
 
     @Override
