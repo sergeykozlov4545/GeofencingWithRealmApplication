@@ -3,6 +3,8 @@ package com.example.sergey.geofencingwithrealmapplication.Model;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.android.gms.location.Geofence;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -43,6 +45,11 @@ public final class LogEventDataBase {
 
         String id = UUID.randomUUID().toString();
         String triggeringRegionName = triggeringRegion == null ? "" : triggeringRegion.getName();
+
+        if (transitionType == Geofence.GEOFENCE_TRANSITION_EXIT && triggeringRegion != null) {
+            triggeringRegionName += " (Ближайшая точка)";
+        }
+
         RealmList<String> registeredNamesRegions = getRegisteredNamesRegions(registeredRegions);
 
         LogEvent event = new LogEvent(id, transitionType, triggeringRegionName, registeredNamesRegions);
