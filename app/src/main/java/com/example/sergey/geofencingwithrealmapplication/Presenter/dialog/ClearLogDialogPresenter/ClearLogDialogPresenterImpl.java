@@ -3,21 +3,17 @@ package com.example.sergey.geofencingwithrealmapplication.Presenter.dialog.Clear
 import android.support.annotation.NonNull;
 
 import com.example.sergey.geofencingwithrealmapplication.Model.LogEventDataBase;
-import com.example.sergey.geofencingwithrealmapplication.Presenter.base.BasePresenter;
+import com.example.sergey.geofencingwithrealmapplication.Presenter.base.DialogPresenter;
 import com.example.sergey.geofencingwithrealmapplication.View.dialog.base.DialogView;
 
-public class ClearLogDialogPresenterImpl extends BasePresenter<DialogView> implements ClearLogDialogPresenter {
+public class ClearLogDialogPresenterImpl
+        extends DialogPresenter<DialogView> implements ClearLogDialogPresenter {
 
     @NonNull
     private LogEventDataBase dataBase;
 
     public ClearLogDialogPresenterImpl(@NonNull LogEventDataBase dataBase) {
         this.dataBase = dataBase;
-    }
-
-    @Override
-    public void viewIsReady() {
-
     }
 
     @Override
@@ -29,12 +25,5 @@ public class ClearLogDialogPresenterImpl extends BasePresenter<DialogView> imple
     @Override
     public void onNegativeButtonClick() {
         hideDialog();
-    }
-
-    private void hideDialog() {
-        DialogView view = getView();
-        if (view != null) {
-            view.hide();
-        }
     }
 }
