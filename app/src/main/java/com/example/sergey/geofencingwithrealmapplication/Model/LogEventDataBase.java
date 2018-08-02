@@ -2,13 +2,10 @@ package com.example.sergey.geofencingwithrealmapplication.Model;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sergey.geofencingwithrealmapplication.App.GeofencingRealmApplication;
-import com.example.sergey.geofencingwithrealmapplication.R;
+import com.example.sergey.geofencingwithrealmapplication.Service.util.LogToast;
 import com.google.android.gms.location.Geofence;
 
 import java.util.List;
@@ -62,7 +59,7 @@ public final class LogEventDataBase {
 
         realm.executeTransaction(r -> {
             r.insertOrUpdate(event);
-            showLogToast(event);
+            LogToast.show(GeofencingRealmApplication.applicationContext, event, Toast.LENGTH_LONG);
         });
     }
 
@@ -77,47 +74,5 @@ public final class LogEventDataBase {
             registeredNamesRegions.add(region.getName());
         }
         return registeredNamesRegions;
-    }
-
-    private void showLogToast(@NonNull LogEvent event) {
-        View view = LayoutInflater.from(GeofencingRealmApplication.applicationContext)
-                .inflate(R.layout.actvity_main_list_item, null);
-
-        initToastEventView(view, event);
-        initToastRegionNameView(view, event);
-        initToastRegisteredRegionsView(view, event);
-
-        showToastWithCustomView(view);
-    }
-
-    private void initToastEventView(View parrent, @NonNull LogEvent event) {
-        TextView eventView = parrent.findViewById(R.id.eventView);
-        eventView.setText(event.getTransitionType() == Geofence.GEOFENCE_TRANSITION_ENTER
-                ? R.string.activity_main_item_event_enter : R.string.activity_main_item_event_exit);
-    }
-
-    private void initToastRegionNameView(View parrent, @NonNull LogEvent event) {
-        TextView regionNameView = parrent.findViewById(R.id.regionNameView);
-        regionNameView.setText(event.getRegionName());
-    }
-
-    private void initToastRegisteredRegionsView(View parrent, @NonNull LogEvent event) {
-        StringBuilder sb = new StringBuilder();
-        RealmList<String> registeredRegions = event.getRegisteredRegions();
-        for (int i = 0; i < registeredRegions.size(); i++) {
-            sb.append(i + 1).append(". ").append(registeredRegions.get(i));
-            if (i + 1 < registeredRegions.size()) {
-                sb.append("\n");
-            }
-        }
-        TextView registeredRegionsView = parrent.findViewById(R.id.registeredRegionsView);
-        registeredRegionsView.setText(sb.toString());
-    }
-
-    private void showToastWithCustomView(View view) {
-        Toast toast = new Toast(view.getContext());
-        toast.setView(view);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.show();
     }
 }
