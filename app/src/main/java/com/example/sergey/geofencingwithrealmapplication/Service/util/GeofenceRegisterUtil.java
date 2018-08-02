@@ -11,7 +11,7 @@ import com.example.sergey.geofencingwithrealmapplication.Model.LogEventDataBase;
 import com.example.sergey.geofencingwithrealmapplication.Model.RealmLatLng;
 import com.example.sergey.geofencingwithrealmapplication.Model.Region;
 import com.example.sergey.geofencingwithrealmapplication.Model.RegionsDatabase;
-import com.example.sergey.geofencingwithrealmapplication.Service.GeofenceService;
+import com.example.sergey.geofencingwithrealmapplication.Service.GeofenceBroadcast;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
@@ -29,9 +29,9 @@ public class GeofenceRegisterUtil {
     private GeofencingClient geofencingClient;
 
     public GeofenceRegisterUtil(@NonNull Context context) {
-        Intent intent = new Intent(context, GeofenceService.class);
-        pendingIntent = PendingIntent.getService(
-                context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent intent = new Intent(GeofenceBroadcast.ACTION);
+        pendingIntent = PendingIntent.getBroadcast(
+                context.getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         geofencingClient = LocationServices.getGeofencingClient(context.getApplicationContext());
     }

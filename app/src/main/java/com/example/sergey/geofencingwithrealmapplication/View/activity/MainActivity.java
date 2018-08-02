@@ -22,7 +22,7 @@ import com.example.sergey.geofencingwithrealmapplication.Model.TrackPreference;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.main.MainActivityPresenter;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.main.MainActivityPresenterImpl;
 import com.example.sergey.geofencingwithrealmapplication.R;
-import com.example.sergey.geofencingwithrealmapplication.Service.GeofenceService;
+import com.example.sergey.geofencingwithrealmapplication.Service.GeofenceBroadcast;
 import com.example.sergey.geofencingwithrealmapplication.View.adapter.LogListAdapter;
 import com.example.sergey.geofencingwithrealmapplication.View.dialog.ClearLogDialog.ClearLogDialog;
 import com.example.sergey.geofencingwithrealmapplication.View.main.MainActivityView;
@@ -117,10 +117,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     }
 
     @Override
-    public void sendGeofenceServiceEvent(@NonNull GeofenceService.TypeOperation typeOperation) {
-        Intent intent = new Intent(this, GeofenceService.class)
-                .putExtra(GeofenceService.TYPE_OPERATION_EXTRA, typeOperation);
-        startService(intent);
+    public void sendGeofenceBroadcastEvent(@NonNull GeofenceBroadcast.TypeOperation typeOperation) {
+        sendBroadcast(new Intent(GeofenceBroadcast.ACTION)
+                .putExtra(GeofenceBroadcast.TYPE_OPERATION_EXTRA, typeOperation));
     }
 
     @Override

@@ -7,7 +7,7 @@ import com.example.sergey.geofencingwithrealmapplication.Model.RegionsDatabase;
 import com.example.sergey.geofencingwithrealmapplication.Model.TrackPreference;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.base.BasePresenter;
 import com.example.sergey.geofencingwithrealmapplication.R;
-import com.example.sergey.geofencingwithrealmapplication.Service.GeofenceService;
+import com.example.sergey.geofencingwithrealmapplication.Service.GeofenceBroadcast;
 import com.example.sergey.geofencingwithrealmapplication.View.main.MainActivityView;
 
 public class MainActivityPresenterImpl
@@ -50,9 +50,9 @@ public class MainActivityPresenterImpl
         view.showMessage(newTrackZonesState
                 ? R.string.activity_main_track_location_on
                 : R.string.activity_main_track_location_off);
-        view.sendGeofenceServiceEvent(newTrackZonesState
-                ? GeofenceService.TypeOperation.REGISTER_ALL_REGIONS
-                : GeofenceService.TypeOperation.UNREGISTER_ALL_REGIONS);
+        view.sendGeofenceBroadcastEvent(newTrackZonesState
+                ? GeofenceBroadcast.TypeOperation.REGISTER_ALL_REGIONS
+                : GeofenceBroadcast.TypeOperation.UNREGISTER_ALL_REGIONS);
     }
 
     @Override

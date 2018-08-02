@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.example.sergey.geofencingwithrealmapplication.Model.Region;
 import com.example.sergey.geofencingwithrealmapplication.Model.RegionsDatabase;
 import com.example.sergey.geofencingwithrealmapplication.Presenter.base.DialogPresenter;
-import com.example.sergey.geofencingwithrealmapplication.Service.GeofenceService;
+import com.example.sergey.geofencingwithrealmapplication.Service.GeofenceBroadcast;
 import com.example.sergey.geofencingwithrealmapplication.View.dialog.EditRegionDialog.EditRegionDialogView;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -37,7 +37,7 @@ public class EditRegionDialogPresenterImpl
         regionsDatabase.updateRegion(regionId, name, center, radius);
         EditRegionDialogView view = getView();
         if (view != null) {
-            view.sendGeofenceServiceEvent(GeofenceService.TypeOperation.REREGISTER_REGIONS);
+            view.sendGeofenceBroadcastEvent(GeofenceBroadcast.TypeOperation.REREGISTER_REGIONS);
         }
         hideDialog();
     }

@@ -23,9 +23,13 @@
 
         <activity android:name=".View.activity.EditPointActivity" />
 
-        <service
-            android:name=".Service.GeofenceService"
-            android:exported="false" />
+        <receiver
+            android:name=".Service.GeofenceBroadcast"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.example.sergey.geofencingwithrealmapplication.Service.receiver_action" />
+            </intent-filter>
+        </receiver>
 
     </application>
 
